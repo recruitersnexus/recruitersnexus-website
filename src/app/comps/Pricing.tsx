@@ -15,22 +15,27 @@ export default function Pricing() {
         "No Interview Report",
         "No One-On-One Coaching sessions",
         "No Personalized Interview Report with Improvement suggestions",
-        "No Dedicated Industry Specific Interview Pool"
+        "No Dedicated Industry Specific Interview Pool",
       ],
-      buttonLabel: "What are you waiting for? Get Started For FREE!",
+      buttonLabel: (
+        <>
+          What are you waiting for?<br />
+          <strong>Get Started For FREE!</strong>
+        </>
+      ),
     },
     {
       title: "Pro",
       price: "$1",
       features: [
-        "One Mock Interviews",
+        "One Mock Interview",
         "Basic Interview Rating",
         "Behavioral & Technical Interview",
         "Access to wider Interviewer Pool",
         "Detailed Interview Report",
         "No One-On-One Coaching sessions",
         "No Personalized Interview Report with Improvement suggestions",
-        "No Dedicated Industry Specific Interview Pool"
+        "No Dedicated Industry Specific Interview Pool",
       ],
       buttonLabel: "Start Your Pro Membership Today!",
     },
@@ -38,7 +43,7 @@ export default function Pricing() {
       title: "Premium",
       price: "$5",
       features: [
-        "pack of 3 Mock Interviews",
+        "Pack of 3 Mock Interviews",
         "Basic Interview Rating",
         "Behavioral, Technical & Case Studies",
         "Dedicated Industry Specific Interview Pool",
@@ -52,22 +57,25 @@ export default function Pricing() {
   return (
     <div className="py-12">
       <h2 className="text-3xl font-bold text-center mb-10">Explore Our Pricing Plans</h2>
-      <div className="flex justify-center space-x-4">
+      <div className="flex flex-wrap justify-center gap-6">
         {plans.map((plan, index) => (
           <BackgroundGradient
             key={index}
-            className="rounded-[22px] p-6 sm:p-10 bg-white dark:bg-zinc-900 shadow-lg max-w-xs"
+            className="rounded-[22px] p-6 sm:p-10 bg-white dark:bg-zinc-900 shadow-lg max-w-xs flex flex-col"
           >
             <div className="text-center mb-6">
               <h3 className="text-xl font-semibold mb-2">{plan.title}</h3>
               <p className="text-2xl font-bold text-indigo-600">{plan.price}</p>
             </div>
-            <div className="mb-6">
+            <div className="flex-grow mb-6">
               <h4 className="text-lg font-semibold mb-4">Available Features</h4>
               <ul className="text-sm space-y-2">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className={`flex items-center space-x-2 ${feature.startsWith('No') ? 'text-red-500' : 'text-green-600'}`}>
-                    <span>{feature.startsWith('No') ? '✗' : '✓'}</span>
+                  <li
+                    key={i}
+                    className={`flex items-center space-x-2 ${feature.startsWith("No") ? "text-red-500" : "text-green-600"}`}
+                  >
+                    <span>{feature.startsWith("No") ? "✗" : "✓"}</span>
                     <span>{feature}</span>
                   </li>
                 ))}

@@ -29,7 +29,7 @@ const Explore = () => {
             <Card className="col-span-3 bg-[#F5F6FA] h-screen">
               <CardHeader>
                 <CardTitle className='text-3xl text-[#242E49]'>Experts</CardTitle>
-                <CardDescription className='text-md'>
+                <CardDescription className='text-md text-black'>
                   Quailty experts here
                 </CardDescription>
               </CardHeader>

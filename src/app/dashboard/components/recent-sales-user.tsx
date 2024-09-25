@@ -87,7 +87,7 @@ export function RecentSales() {
                             <div className="ml-4 space-y-1">
                               
                               <div className="flex flex-col space-y-3">
-                              <p className="text-sm font-medium leading-none">
+                              <p className="text-sm font-medium leading-none text-black">
                                 {item?.username} 
                               </p>
                               <p className="text-sm font-medium leading-none">{hrTable?.filter((info:any)=> info.user_id === item?.id)[0]?.designation}</p>

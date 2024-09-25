@@ -437,22 +437,13 @@ const JobUser = () => {
         <>
           <div>
             <div className="w-full flex justify-between py-8">
-              <h1 className="font-bold  mb-0 px-4 font-nunito text-3xl text-[#242E49]">
+              <h1 className="font-bold  mb-0 px-4 font-nunito text-3xl text-white">
                 Jobs{" "}
               </h1>
-              {/* <button className='flex flex-row space-x-2 bg-[#242E49] hover:text-green-400 px-4 py-2 text-white items-center rounded-xl text-sm justify-center ' onClick={openJobModal}><Plus size={24} color='white'/> <span>Add Job</span></button> */}
+             
             </div>
 
-            {/* <div className="flex flex-row my-4 space-x-4 items-center justify-start w-full">
-          <div>
-            <select value={active} onChange={(e) => setActive(e.target.value)} className='input py-3.5 px-4 bg-[#FFFFFF] shadow-md rounded-xl w-full outline-none' id='active'>
-             
-              <option value="online">Active</option>
-              <option value="expired">Inactive</option>
-            </select>
-          </div>
-
-        </div> */}
+          
 
             {currentItems.length !== 0 ? (
               <div className="max-h-[500px] min-h-[500px] w-full font-be  overflow-y-auto overflow-x-hidden lg:px-4">
@@ -489,11 +480,11 @@ const JobUser = () => {
                           <div className="flex flex-col lg:flex-row  w-full  justify-between">
                             <div className="flex flex-row  space-x-4 items-center">
                               <Avatar className="h-16 w-16">
-                                {/* <Avatar className="h-9 w-9 lg:h-16 lg:w-16"> */}
+                            
                                 <AvatarImage
                                   src={`${item?.image}` || "/camera.png"}
                                 />
-                                {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+                               
                                 <AvatarFallback>OM</AvatarFallback>
                               </Avatar>
 
@@ -617,7 +608,7 @@ const JobUser = () => {
                             </div>
                           </div>
 
-                          {/* <h1 className="text-lg font-bold leading-none">{item?.title}</h1> */}
+                          
                           <div className="flex flex-col space-y-1 w-full  ">
                             <span
                               className={`${
@@ -656,35 +647,10 @@ const JobUser = () => {
                             </div>
                           </div>
 
-                          {/* Buttons  */}
+                                                 </div>
 
-                          {/* <div className=' space-x-3  hidden lg:flex justify-start flex-grow'>
-                   
- 
-                   {showSkillModal && <SkillModal onClose={closeSkillModal} onSubmit={handleSkillSubmit} />}
-                   <Button className='bg-[#F43F5E] hover:bg-[#F43F5E]/80  h-11 rounded-lg flex space-x-2' onClick={() => onClickDeleteJob(item.id, userData?.id)}><Trash size={14} /> <span>Delete Job</span></Button>
-                   <Button className='bg-[#06A561] hover:bg-[#06A561]/80  h-11 rounded-lg flex space-x-2' onClick={() => openSkillModal(item?.id)}><Plus size={20} /> <span>Add Skill</span></Button>
- 
-                 </div> */}
-                        </div>
-
-                        {/* <div className='flex text-sm lg:hidden space-x-6'>
-                     <p className='text-xs'><span className='font-bold'>Salary:</span> {item.salary_start}$ - {item.salary_end}$</p>
-                     <p className='text-xs'><span className='font-bold'>Job Status:</span> {item.is_approved}</p>
-                   </div> */}
-
-                        {/* <div className="flex flex-col space-y-6 justify-start lg:hidden ">
-                     <div className="flex space-x-6 flex-grow justify-start">
-                       <div>
-                         <Button className="text-xs">Apply Now</Button>
-                       </div>
-                     </div>
-                   </div> */}
                       </div>
-                      {/* <div className=" font-medium hidden lg:flex flex-col space-y-4">
-                   <p><span className='font-bold text-md'>Salary:</span> {item.salary_start}$ - {item.salary_end}$</p>
-                   <p><span className='font-bold text-md'>Job Status:</span> {item.is_approved}</p>
-                 </div> */}
+                      
                     </div>
                   ))}
               </div>
@@ -692,8 +658,8 @@ const JobUser = () => {
               <div className="flex w-full h-screen justify-center items-start">
                 <div className="flex bg-white w-[400px] h-[200px] justify-center rounded-lg shadow-md items-center">
                   {" "}
-                  <h1 className="font-nunito font-bold text-3xl text-[#242E49]">
-                    No Jobs Found
+                  <h1 className="font-nunito font-bold text-3xl">
+                    loading...
                   </h1>
                 </div>
               </div>
@@ -761,7 +727,7 @@ function PaginationSection({
             <PaginationLink
               className={
                 currentPage === page
-                  ? "bg-[#4765FF] hover:bg-[#4765FF] text-white hover:text-white cursor-pointer rounded-md"
+                  ? "bg-[#4765FF] hover:bg-[#4765FF]  hover:text-white cursor-pointer rounded-md"
                   : "hover:bg-[#4765FF] hover:text-white cursor-pointer"
               }
               onClick={() => setCurrentPage(page)}

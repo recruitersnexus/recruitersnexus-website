@@ -33,8 +33,8 @@ export default function Faq() {
           >
             <div className="flex cursor-pointer items-center justify-between">
               <span className=" lg:text-[24px] lg:leading-[32px] text-[16px] leading-[25px] font-bold text-[#242E49] font-nunito">
-                Why should I participate in mock interviews with real HR
-                professionals?
+              Why should I participate in mock interviews with real HR professionals&lsquo;?
+
               </span>
               <Image
                 src={"/plus.png"}
@@ -51,7 +51,7 @@ export default function Faq() {
               <p className="pt-4 text-gray-700 lg:text-[16px] lg:leading-[25.6px] text-[12px] leading-[19.2px] font-nunito w-[80%] text-start">
                 Participating in mock interviews with real HR professionals
                 offers you a unique opportunity to experience the interview
-                process in a risk-free environment. You'll receive direct
+                process in a risk-free environment. You will receive direct
                 feedback on your interview skills, understand what HR looks for
                 in candidates, and significantly improve your confidence and
                 performance in real interviews.
@@ -83,7 +83,7 @@ export default function Faq() {
               <p className="pt-4 text-gray-700 lg:text-[16px] lg:leading-[25.6px] text-[12px] leading-[19.2px] font-nunito">
                 This project simulates real interview scenarios, providing you
                 with insights into common questions, interview formats, and
-                expectations from HR professionals. You'll learn how to
+                expectations from HR professionals. You will learn how to
                 articulate your thoughts, showcase your skills effectively, and
                 handle challenging questions, preparing you for success in
                 actual job interviews.
@@ -145,11 +145,8 @@ export default function Faq() {
               <p className="pt-4 text-gray-700 lg:text-[16px] lg:leading-[25.6px] text-[12px] leading-[19.2px] font-nunito">
                 Participating as an interviewer allows you to refine your
                 interviewing and assessment skills by engaging with a diverse
-                pool of candidates. It offers you the chance to practice
-                different interview techniques, stay updated on the latest
-                trends in recruitment, and better understand the candidate's
-                perspective, enhancing your overall effectiveness as a
-                recruiter.
+                pool of candidates. It offers you the chance to practice different interview techniques, stay updated on the latest trends in recruitment, and better understand the candidate&rsquo;s perspective, enhancing your overall effectiveness as a recruiter.
+
               </p>
             </div>
           </div>
@@ -177,7 +174,7 @@ export default function Faq() {
               <p className="pt-4 text-gray-700 lg:text-[16px] lg:leading-[25.6px] text-[12px] leading-[19.2px] font-nunito">
                 Joining this project as an HR professional provides you with a
                 platform to share your knowledge, mentor job seekers, and
-                contribute to their career development. It's an opportunity to
+                contribute to their career development. It&rsquo;s an opportunity to
                 give back to the community while honing your own skills and
                 expanding your network with other HR professionals.
               </p>
@@ -207,7 +204,7 @@ export default function Faq() {
               </div>
               <p className="pt-4 text-gray-700 lg:text-[16px] lg:leading-[25.6px] text-[12px] leading-[19.2px] font-nunito">
                 Absolutely. By engaging with candidates from various backgrounds
-                and industries, you'll gain deeper insights into effective
+                and industries, you will gain deeper insights into effective
                 questioning techniques, candidate evaluation, and the
                 intricacies of the interview process. These experiences can
                 directly translate to more effective and efficient recruitment

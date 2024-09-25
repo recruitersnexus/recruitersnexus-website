@@ -60,16 +60,16 @@ useEffect(() => {
         {userData && (<div>
       <Tabs defaultValue="notConducted" className="space-y-8 md:space-y-4 bg-[#F5F6FA] ">
           <TabsList className='flex bg-[#F5F6FA] w-full  space-x-4  flex-row items-start  justify-end'>
-            <TabsTrigger className='data-[state=active]:bg-[#242E49] data-[state=active]:text-white w-56 py-3 text-xs md:text-md bg-white shadow-lg ' value="notConducted">Not-Conducted</TabsTrigger>
+            <TabsTrigger className=' text-black data-[state=active]:bg-[#242E49] data-[state=active]:text-white w-56 py-3 text-xs md:text-md bg-white shadow-lg ' value="notConducted">Not-Conducted</TabsTrigger>
 
-            <TabsTrigger className='data-[state=active]:bg-[#242E49] data-[state=active]:text-white w-56 py-3 text-xs md:text-md bg-white shadow-lg ' value="conducted" >
+            <TabsTrigger className='text-black data-[state=active]:bg-[#242E49] data-[state=active]:text-white w-56 py-3 text-xs md:text-md bg-white shadow-lg ' value="conducted" >
               Conducted
             </TabsTrigger>
 
 
           </TabsList>
 
-          <TabsContent value="notConducted" className="">
+          <TabsContent value="notConducted" className="text-black">
 
             {userData?.role === "hr"?(
                 <UnconductedHR/>
@@ -78,7 +78,7 @@ useEffect(() => {
           </TabsContent>
 
 
-          <TabsContent value="conducted" className="">
+          <TabsContent value="conducted" className="text-black">
             
             {userData?.role === "hr"?(
               <ConductedHR/>

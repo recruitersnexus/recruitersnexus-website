@@ -408,8 +408,8 @@ const ServiceInput = () => {
                   <div className='flex flex-col space-y-6 w-full px-4 bg-white rounded-xl shadow-md  h-[450px] md:h-[300px] items-center justify-center'>
                     <Alert className='border-4' variant="destructive">
                       <AlertCircle className="h-6 w-6" />
-                      <AlertTitle className='font-bold text-2xl'>Disclaimer</AlertTitle>
-                      <AlertDescription className='font-bold text-xl'>
+                      <AlertTitle className='font-bold text-2xl text-red-700'>Disclaimer</AlertTitle>
+                      <AlertDescription className='font-bold text-xl text-black'>
                         Please complete your profile first and then send it for approval by clicking the button below
                       </AlertDescription>
                     </Alert>

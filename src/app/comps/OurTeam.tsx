@@ -36,7 +36,7 @@ export function OurTeam() {
       <div className="flex relative overflow-hidden h-auto items-center justify-center py-10 md:py-16 lg:py-24">
         <WavyBackground className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center h-full">
           <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white font-bold inter-var text-center mb-5">
-            Meet The Experienced HR's In Our Network
+            Meet The Experienced HR&rsquo;s In Our Network
           </h1>
           <p className="text-base md:text-lg lg:text-xl mt-4 text-gray-300 font-normal inter-var text-center max-w-3xl mx-auto">
             Experts with years of industry experience and a proven track record
