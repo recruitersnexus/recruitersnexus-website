@@ -5,17 +5,15 @@ import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 export function Testimonial() {
   return (
-<<<<<<< HEAD
+<>
     <div className="h-[40rem] rounded-md flex flex-col antialiased bg-black  bg-grid-white/[0.13] items-center justify-center relative overflow-hidden">
-=======
-    <div className="h-[40rem] rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.13] items-center justify-center relative overflow-hidden">
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
       <InfiniteMovingCards
         items={testimonials}
         direction="right"
         speed="slow"
       />
     </div>
+    </>
   );
 }
 
