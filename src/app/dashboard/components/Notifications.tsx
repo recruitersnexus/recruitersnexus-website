@@ -1,21 +1,59 @@
 "use client"
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+<<<<<<< HEAD
 
 import { useState, useEffect } from 'react';
 
 import useUserData from '@/lib/db/userData';
 import { format } from 'date-fns';
+=======
+import { Metadata } from "next";
+import Image from "next/image";
+import { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CalendarDateRangePicker } from "@/app/dashboard/components/date-range-picker";
+import { MainNav } from "@/app/dashboard/components/main-nav";
+import { Overview } from "@/app/dashboard/components/overview";
+import { RecentSales } from "@/app/dashboard/components/recent-sales";
+import { Search } from "@/app/dashboard/components/search";
+import { UserNav } from "@/app/dashboard/components/user-nav";
+import useUserData from '@/lib/db/userData';
+import Link from 'next/link';
+import { format } from 'date-fns';
+import NavBar from './NavBar';
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 import MainUsers from '@/lib/db/mainUsers';
 import InterviewData from '@/lib/db/interviewData';
 import { useRouter } from 'next/navigation';
 import HrData from '@/lib/db/hrData';
 import FeedbackData from '@/lib/db/feedbackData';
+<<<<<<< HEAD
 import toast from 'react-hot-toast';
 import JobData from '@/lib/db/jobData';
 import jobSkillsData from '@/lib/db/jobSkillsData';
 import moment from 'moment-timezone';
 import ConfirmationModal from '@/app/Confirmation/ConfirmationModal';
+=======
+import Rating from './Rating';
+import toast from 'react-hot-toast';
+import { Plus } from 'lucide-react';
+import JobData from '@/lib/db/jobData';
+import SkillModal from './SkillModal';
+import jobSkillsData from '@/lib/db/jobSkillsData';
+import { X } from 'lucide-react';
+import moment from 'moment-timezone';
+import ConfirmationModal from '@/app/Confirmation/ConfirmationModal';
+import SkeletonLoaderCustom from '@/components/SkeletonLoaderCustom';
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 import SpinnerLoader from './SpinnerLoader';
 
 

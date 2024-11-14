@@ -5,10 +5,16 @@ import React from "react";
 
 export default function Faq() {
   return (
+<<<<<<< HEAD
     
     <div className="py-12 bg-black lg:py-16 flex flex-col md:flex-row w-full px-8 md:px-8 lg:px-24">
       <div className="md:w-[40%] flex flex-col items-start text-left">
         <span className="font-extrabold text-white text-[32px] leading-[42.47px] lg:text-[42px] lg:leading-[55.75px]  font-nunito">
+=======
+    <div className="py-12 lg:py-16 flex flex-col md:flex-row w-full px-8 md:px-8 lg:px-24">
+      <div className="md:w-[40%] flex flex-col items-start text-left">
+        <span className="font-extrabold text-[32px] leading-[42.47px] lg:text-[42px] lg:leading-[55.75px]  font-nunito">
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
           Frequently Asked Questions
         </span>
         <span className="text-[14px] leading-[23.65px] lg:text-[20px] lg:leading-[33.8px] w-[75%] text-gray-700 font-be">

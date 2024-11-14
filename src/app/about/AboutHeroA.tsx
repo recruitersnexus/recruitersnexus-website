@@ -2,6 +2,10 @@
 import Image from "next/image";
 import React from "react";
 import { motion } from "framer-motion";
+<<<<<<< HEAD
+=======
+import Link from "next/link";
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 
 export default function AboutHeroA() {
   const MULTIDIRECTION_SLIDE_VARIANTS = {
@@ -10,7 +14,11 @@ export default function AboutHeroA() {
     right: { opacity: 0, x: "25vw" },
   };
   return (
+<<<<<<< HEAD
     <div className="bg-black font-nunito bg-cover bg-no-repeat bg-center overflow-hidden">
+=======
+    <div className="font-nunito bg-cover bg-no-repeat bg-center overflow-hidden my-6">
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
       {/* Custom gradient for mobile and medium screens, solid color for desktop */}
       <div className=" px-6 sm:px-10 md:px-24 pt-20 lg:py-12 flex flex-col  md:flex-col lg:flex-row w-full gap-4 md:gap-x-16 relative">
         <div className="flex justify-center w-full lg:mt-16 lg:w-1/2">
@@ -50,7 +58,11 @@ export default function AboutHeroA() {
               </span>
             </div>
             <div className="mt-4">
+<<<<<<< HEAD
               <span className="font-be text-[14px] text-left text-white">
+=======
+              <span className="font-be text-[14px] text-left ">
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
                 At RecruitersNexus, we are committed to revolutionizing the
                 recruitment process, making it more user-centric, efficient, and
                 effective for both candidates and employers. We understand that

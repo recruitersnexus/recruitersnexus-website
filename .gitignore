@@ -37,5 +37,8 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+<<<<<<< HEAD
 
 .vercel
+=======
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353

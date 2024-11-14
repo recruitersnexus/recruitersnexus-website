@@ -12,16 +12,26 @@ export default function Home() {
     <div className="w-full">
       <Hero />
       <HowTo />
+<<<<<<< HEAD
     
+=======
+      {/* <Partners/> */}
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
       <div id="why-us">
         <WhyUs />
       </div>
       <div id="experts">
+<<<<<<< HEAD
   <OurTeam />
 </div>
 
   <Pricing />
 
+=======
+        <OurTeam />
+      </div>
+      <Pricing />
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
       <Testimonial />
       <Faq />
     

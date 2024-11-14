@@ -10,7 +10,11 @@ export default function Partners() {
         right: { opacity: 0, x: "25vw" },
     };
     return (
+<<<<<<< HEAD
         <div className='h-auto px-4 sm:px-8 md:px-12 lg:px-16 flex flex-col md:flex-row md:space-y-0 md:space-x-6 lg:space-x-12 w-full items-center font-nunito overflow-hidden'>
+=======
+        <div className='bg-[#DBEBFF] h-auto py-8 px-4 sm:px-8 md:px-12 lg:px-16 flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-6 lg:space-x-12 w-full items-center font-nunito overflow-hidden'>
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
             <div className='text-center sm:text-left flex flex-col items-center md:items-start w-full lg:w-[35%] mx-auto lg:mx-0'>
             <motion.h1
         initial="hidden"

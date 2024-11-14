@@ -2,6 +2,10 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+<<<<<<< HEAD
+=======
+import { GoClockFill } from "react-icons/go";
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
@@ -95,7 +99,32 @@ export default function Footer() {
                   </span>
                 </motion.h1>
               </div>
+<<<<<<< HEAD
              
+=======
+              {/* <div className="flex items-center">
+                <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                  <Image src="/clock.png" height={40} width={40} alt="phone" />
+                </motion.h1>
+                <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                  <span className="ml-2 font-nunito font-bold  lg:text-[20px] lg:leading-[27.28px] text-[16px] leading-[21.82px]">
+                    No Operational Hours
+                  </span>
+                </motion.h1>
+              </div> */}
+              {/* <div className="flex items-center">
+                <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                  <div className="w-10 h-10 mr-2 bg-[#edf6ff] rounded-lg">
+                  <GoClockFill className="w-7 h-7 flex mr-2 bg-[#edf6ff] rounded-lg" color="black" />
+                  </div>
+                </motion.h1>
+                <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                  <span className="ml-2 font-nunito font-bold  lg:text-[20px] lg:leading-[27.28px] text-[16px] leading-[21.82px]">
+                    No Operational Hours
+                  </span>
+                </motion.h1>
+              </div> */}
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
               <div className="flex items-center">
                 <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
                   <div className="w-10 h-10 mr-2">
@@ -119,6 +148,35 @@ export default function Footer() {
           <div className="w-full lg:w-1/2 px-4">
             {/* <div className="w-full lg:w-2/3 px-4"> */}
             <div className="flex flex-wrap justify-evenly">
+<<<<<<< HEAD
+=======
+              {/* <div className="w-full sm:w-1/2 md:w-1/4 mb-8 md:mb-0">
+                <motion.h2 className="font-bold lg:text-[20px] lg:leading-[27.28px] text-white mb-8" variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                Home
+                
+                </motion.h2>
+                <nav className="list-none space-y-4">
+                  <li><Link href="/features" passHref>
+                    <motion.h1 className="text-gray-300 hover:text-gray-200 cursor-pointer font-be " variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                    Features
+                   
+                    </motion.h1>
+                  </Link></li>
+                  <li><Link href="/testimonials" passHref>
+                    <motion.h1 className="text-gray-300 hover:text-gray-200 cursor-pointer font-be " variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                    Testimonials
+            
+                    </motion.h1>
+                  </Link></li>
+                  <li><Link href="/faqs" passHref>
+                    <motion.h1 className="text-gray-300 hover:text-gray-200 cursor-pointer font-be " variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                    FAQs
+                   
+                    </motion.h1>
+                  </Link></li>
+                </nav>
+              </div> */}
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
               <div className="w-full sm:w-1/2 md:w-1/4 mb-8 md:mb-0 ">
                 <div>
                   <motion.h2
@@ -215,11 +273,119 @@ export default function Footer() {
                   </li>
                 </nav>
               </div>
+<<<<<<< HEAD
              
             </div>
           </div>
 
          
+=======
+              {/* <div className="w-full sm:w-1/2 md:w-1/4">
+                <motion.h2
+                  className="font-bold lg:text-[20px] lg:leading-[27.28px] text-white mb-8"
+                  variants={FADE_DOWN_ANIMATION_VARIANTS}
+                >
+                  Academics
+                </motion.h2>
+                <nav className="list-none space-y-4">
+                  <li>
+                    <Link href="/offers" passHref>
+                      <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                        <div className="text-gray-300 hover:text-gray-200 cursor-pointer font-be">
+                          Special Offers
+                        </div>
+                      </motion.h1>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/features" passHref>
+                      <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                        <div className="text-gray-300 hover:text-gray-200 cursor-pointer font-be">
+                          Special Features
+                        </div>
+                      </motion.h1>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/gallery" passHref>
+                      <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
+                        <div className="text-gray-300 hover:text-gray-200 cursor-pointer font-be">
+                          Gallery
+                        </div>
+                      </motion.h1>
+                    </Link>
+                  </li>
+                </nav>
+              </div> */}
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          {/* <div className="w-full border-y border-gray-700 py-8 my-8 flex flex-wrap justify-between items-center">
+            <motion.h1
+              initial="hidden"
+              animate="visible"
+              variants={MULTIDIRECTION_SLIDE_VARIANTS}
+              transition={{ duration: 1 }}
+            >
+              <div className="flex space-x-6">
+                <Link href="/terms" passHref>
+                  <div className="text-gray-300 hover:text-white cursor-pointer font-be text-[12px] lg:text-[16px] ">
+                    Terms of Service
+                  </div>
+                </Link>
+                <Link href="/privacy" passHref>
+                  <div className="text-gray-300 hover:text-white cursor-pointer font-be text-[12px] lg:text-[16px] ">
+                    Privacy Policy
+                  </div>
+                </Link>
+              </div>
+            </motion.h1>
+            <motion.h1
+              initial="right"
+              animate="visible"
+              variants={MULTIDIRECTION_SLIDE_VARIANTS}
+              transition={{ duration: 1 }}
+            >
+              <div className="flex mt-4 lg:mt-0">
+                <Link href="https://facebook.com" passHref>
+                  <div className="cursor-pointer">
+                    <Image
+                      src="/facebook.png"
+                      width={56}
+                      height={56}
+                      className="lg:w-[56px] lg:h-[56px] w-[36px] h-[36px]"
+                      alt="Facebook"
+                    />
+                  </div>
+                </Link>
+                <Link href="https://twitter.com" passHref>
+                  <div className="cursor-pointer ml-4">
+                    <Image
+                      src="/x.png"
+                      width={56}
+                      height={56}
+                      className="lg:w-[56px] lg:h-[56px] w-[36px] h-[36px]"
+                      alt="Twitter"
+                    />
+                  </div>
+                </Link>
+                <Link href="https://linkedin.com" passHref>
+                  <div className="cursor-pointer ml-4">
+                    <Image
+                      src="/linkedin.png"
+                      width={56}
+                      height={56}
+                      className="lg:w-[56px] lg:h-[56px] w-[36px] h-[36px]"
+                      alt="LinkedIn"
+                    />
+                  </div>
+                </Link>
+              </div>
+            </motion.h1>
+          </div> */}
+
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
           <div className="w-full flex flex-col  md:flex-row  justify-between items-center pt-6">
             <p className="text-gray-400 text-[16px] font-be">
               © {currentYear} Recruiters Nexus. All rights reserved.

@@ -1,4 +1,8 @@
 "use client"
+<<<<<<< HEAD
+=======
+import Image from 'next/image';
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 import React from 'react'
 import { motion } from "framer-motion";
 import JobData from '@/lib/db/jobData';

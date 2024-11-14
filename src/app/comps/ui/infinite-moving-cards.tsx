@@ -23,6 +23,7 @@ export const InfiniteMovingCards = ({
   const scrollerRef = React.useRef<HTMLUListElement>(null);
   const [start, setStart] = useState(false);
 
+<<<<<<< HEAD
   const getDirection = useCallback(() => {
     if (containerRef.current) {
       if (direction === "left") {
@@ -51,6 +52,8 @@ export const InfiniteMovingCards = ({
     }
   }, [speed]);
 
+=======
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
   const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
@@ -66,29 +69,76 @@ export const InfiniteMovingCards = ({
       getSpeed();
       setStart(true);
     }
+<<<<<<< HEAD
   }, [getDirection, getSpeed]);
+=======
+  }, [direction, speed]);
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 
   useEffect(() => {
     addAnimation();
   }, [addAnimation]);
 
+<<<<<<< HEAD
   return (
     <>
       <div className="text-5xl font-bold mb-10 text-white">
+=======
+  const getDirection = () => {
+    if (containerRef.current) {
+      if (direction === "left") {
+        containerRef.current.style.setProperty(
+          "--animation-direction",
+          "forwards"
+        );
+      } else {
+        containerRef.current.style.setProperty(
+          "--animation-direction",
+          "reverse"
+        );
+      }
+    }
+  };
+
+  const getSpeed = () => {
+    if (containerRef.current) {
+      if (speed === "fast") {
+        containerRef.current.style.setProperty("--animation-duration", "20s");
+      } else if (speed === "normal") {
+        containerRef.current.style.setProperty("--animation-duration", "40s");
+      } else {
+        containerRef.current.style.setProperty("--animation-duration", "80s");
+      }
+    }
+  };
+
+  return (
+    <>
+      <div className="text-5xl font-bold mb-10">
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
         <h1>What Our Clients Say About Us</h1>
       </div>
       <div
         ref={containerRef}
         className={cn(
+<<<<<<< HEAD
           "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+=======
+          "scroller relative z-20 max-w-7xl overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
           className
         )}
       >
         <ul
           ref={scrollerRef}
           className={cn(
+<<<<<<< HEAD
             "flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
             start && "animate-scroll",
+=======
+            " flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
+            start && "animate-scroll ",
+>>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
             pauseOnHover && "hover:[animation-play-state:paused]"
           )}
         >
