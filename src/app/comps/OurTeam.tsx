@@ -33,7 +33,7 @@ const people = [
 export function OurTeam() {
   return (
     <>
-      <div className="flex relative overflow-hidden h-auto items-center justify-center py-10 md:py-16 lg:py-24">
+      <div className="flex relative overflow-hidden h-auto items-center justify-center py-10 md:py-16 lg:py-24 bg-black">
         <WavyBackground className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center h-full">
           <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white font-bold inter-var text-center mb-5">
             Meet The Experienced HR&rsquo;s In Our Network
