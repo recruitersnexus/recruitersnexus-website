@@ -5,11 +5,9 @@ import { Meteors } from "./ui/meteors";
 
 export function HowTo() {
   return (
-<<<<<<< HEAD
+
     <div className="bg-black flex flex-col items-center justify-center min-h-screen">
-=======
-    <div className="flex flex-col items-center justify-center min-h-screen">
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
+
       {/* Headings */}
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-white mb-4">

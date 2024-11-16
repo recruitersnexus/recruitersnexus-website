@@ -2,10 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-<<<<<<< HEAD
-=======
 import { GoClockFill } from "react-icons/go";
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
@@ -99,9 +96,6 @@ export default function Footer() {
                   </span>
                 </motion.h1>
               </div>
-<<<<<<< HEAD
-             
-=======
               {/* <div className="flex items-center">
                 <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
                   <Image src="/clock.png" height={40} width={40} alt="phone" />
@@ -124,7 +118,6 @@ export default function Footer() {
                   </span>
                 </motion.h1>
               </div> */}
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
               <div className="flex items-center">
                 <motion.h1 variants={FADE_DOWN_ANIMATION_VARIANTS}>
                   <div className="w-10 h-10 mr-2">
@@ -148,8 +141,7 @@ export default function Footer() {
           <div className="w-full lg:w-1/2 px-4">
             {/* <div className="w-full lg:w-2/3 px-4"> */}
             <div className="flex flex-wrap justify-evenly">
-<<<<<<< HEAD
-=======
+
               {/* <div className="w-full sm:w-1/2 md:w-1/4 mb-8 md:mb-0">
                 <motion.h2 className="font-bold lg:text-[20px] lg:leading-[27.28px] text-white mb-8" variants={FADE_DOWN_ANIMATION_VARIANTS}>
                 Home
@@ -176,7 +168,6 @@ export default function Footer() {
                   </Link></li>
                 </nav>
               </div> */}
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
               <div className="w-full sm:w-1/2 md:w-1/4 mb-8 md:mb-0 ">
                 <div>
                   <motion.h2
@@ -272,14 +263,10 @@ export default function Footer() {
                     </Link>
                   </li>
                 </nav>
-              </div>
-<<<<<<< HEAD
-             
+              </div>             
             </div>
           </div>
 
-         
-=======
               {/* <div className="w-full sm:w-1/2 md:w-1/4">
                 <motion.h2
                   className="font-bold lg:text-[20px] lg:leading-[27.28px] text-white mb-8"
@@ -317,8 +304,7 @@ export default function Footer() {
                   </li>
                 </nav>
               </div> */}
-            </div>
-          </div>
+          
 
           {/* Bottom Section */}
           {/* <div className="w-full border-y border-gray-700 py-8 my-8 flex flex-wrap justify-between items-center">
@@ -385,7 +371,6 @@ export default function Footer() {
             </motion.h1>
           </div> */}
 
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
           <div className="w-full flex flex-col  md:flex-row  justify-between items-center pt-6">
             <p className="text-gray-400 text-[16px] font-be">
               © {currentYear} Recruiters Nexus. All rights reserved.

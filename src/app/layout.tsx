@@ -6,10 +6,6 @@ import { Be_Vietnam_Pro, Inter, Nunito } from "next/font/google";
 import toast, { Toaster } from 'react-hot-toast';
 import { cn } from "../lib/utils";
 import Footer from "./comps/Footer";
-<<<<<<< HEAD
-=======
-import FooterExcep from "./comps/FooterExcep";
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 import Navbar from "./comps/Navbar";
 import ScrollToTopButton from "./comps/scrollTop";
 

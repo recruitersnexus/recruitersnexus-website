@@ -3,11 +3,8 @@ import { HoverEffect } from "../comps/ui/card-hover-effect";
 
 export function WhyUs() {
   return (
-<<<<<<< HEAD
     <div className="bg-black max-w-8xl mx-auto px-8">
-=======
-    <div className="max-w-8xl mx-auto px-8">
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
+    
       <HoverEffect items={projects} />
     </div>
   );

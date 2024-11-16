@@ -55,18 +55,13 @@ export default function Pricing() {
   ];
 
   return (
-<<<<<<< HEAD
     <div className="bg-black">
       <h2 className="text-5xl font-bold text-center mb-10 text-white">Explore Our Pricing Plans</h2>
-=======
-    <div className="py-12">
-      <h2 className="text-3xl font-bold text-center mb-10">Explore Our Pricing Plans</h2>
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
+    
       <div className="flex flex-wrap justify-center gap-6">
         {plans.map((plan, index) => (
           <BackgroundGradient
             key={index}
-<<<<<<< HEAD
             className="rounded-[22px] p-6 sm:p-10 bg-zinc-900 dark:bg-zinc-900 shadow-lg max-w-xs flex flex-col"
           >
             <div className="text-center mb-6">
@@ -75,16 +70,13 @@ export default function Pricing() {
             </div>
             <div className="flex-grow mb-6">
               <h4 className="text-lg font-semibold mb-4 text-white">Available Features</h4>
-=======
-            className="rounded-[22px] p-6 sm:p-10 bg-white dark:bg-zinc-900 shadow-lg max-w-xs flex flex-col"
-          >
+           </div>
             <div className="text-center mb-6">
               <h3 className="text-xl font-semibold mb-2">{plan.title}</h3>
               <p className="text-2xl font-bold text-indigo-600">{plan.price}</p>
             </div>
             <div className="flex-grow mb-6">
               <h4 className="text-lg font-semibold mb-4">Available Features</h4>
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
               <ul className="text-sm space-y-2">
                 {plan.features.map((feature, i) => (
                   <li

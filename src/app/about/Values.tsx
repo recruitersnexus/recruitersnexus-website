@@ -1,13 +1,9 @@
 "use client";
-<<<<<<< HEAD
 import React from "react";
-=======
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { motion } from "framer-motion";
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
 import { Meteors } from "../comps/ui/meteors";
 export default function Values() {
   const cardContent = [
@@ -43,13 +39,9 @@ export default function Values() {
     right: { opacity: 0, x: "25vw" },
   };
   return (
-<<<<<<< HEAD
+
   <>  <div className="text-center  text-white bg-black font-bold text-[48px]"><h1>Our Core Values</h1></div>
   <div className="flex justify-center items-center min-h-screen bg-black">
-=======
-  <>  <div className="text-center  font-bold text-[48px]"><h1>Our Core Values</h1></div>
-  <div className="flex justify-center items-center min-h-screen">
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-6">
         {cardContent.map((card, index) => (
           <div key={index} className="w-full relative max-w-sm">

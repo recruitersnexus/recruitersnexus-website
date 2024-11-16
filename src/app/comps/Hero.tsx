@@ -23,11 +23,9 @@ export const product = [
 ];
 
 export function HeroParallaxDemo() {
-<<<<<<< HEAD
+
   return <HeroParallax products={product}/>;
-=======
-  return <HeroParallax products={product} />;
->>>>>>> baea275b85407d6cc494f7e68aba398acd25d353
+
 }
 
 export default HeroParallaxDemo;

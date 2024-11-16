@@ -155,6 +155,22 @@ const NavBar = () => {
                                             <Notifications />
                                             </div> */}
                                             </div>}
+
+
+                                            {/* --------user dashboard bell icon ---- */}
+
+
+                                            {userData?.role === "user" &&
+                                            <div className='flex items-center relative '>
+                                                <span className="bg-blue-500 w-4 h-4 rounded-full text-white text-xs flex items-center justify-center absolute top-[-6px] right-[-4px]">{notificationsCount}</span>
+                                                <button onClick={handleClickOpen} className='cursor-pointer bg-'><Bell className='' color={` ${pathname === '/notifications' ? '#4765FF' : 'black'}`} size={24} /></button>
+
+                                                {/* <div className={`w-screen h-screen max-h-[100vh] overflow-y-auto  z-10 ${bell ? 'block' : 'hidden'} bg-[#F2F5F9] rounded-lg shadow-lg p-4 absolute top-[40px] right-[-80px]`}>
+                                            <Notifications />
+                                            </div> */}
+                                            </div>}
+
+                                            {/* user dashboard bell icon end */}
                                         {/* <div className='flex space-x-4 items-center cursor-pointer'> */}
                                         <UserNav />
                                         {/* <ChevronDown size={24} color='black' /> */}
