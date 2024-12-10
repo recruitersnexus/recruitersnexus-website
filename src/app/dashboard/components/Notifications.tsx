@@ -16,20 +16,13 @@ import JobData from '@/lib/db/jobData';
 import jobSkillsData from '@/lib/db/jobSkillsData';
 import moment from 'moment-timezone';
 import ConfirmationModal from '@/app/Confirmation/ConfirmationModal';
-import SkeletonLoaderCustom from '@/components/SkeletonLoaderCustom';
 import SpinnerLoader from './SpinnerLoader';
-
-
 const Modal = ({ onClose, id, slot, interview_id }: { onClose: () => void, id: string, slot: string, interview_id:string }) => {
-
-
-
-
   return (
     <div className="fixed  inset-0 z-10 overflow-y-auto flex items-center justify-center">
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75" onClick={onClose}></div>
 
-      <div className=" p-8 rounded-3xl max-w-md relative z-20"> {/* Set a higher z-index */}
+      <div className=" p-8 rounded-3xl max-w-md relative z-20">
         <ConfirmationModal id={id} interview_id={interview_id} slot={slot} />
       </div>
 
@@ -37,9 +30,6 @@ const Modal = ({ onClose, id, slot, interview_id }: { onClose: () => void, id: s
     </div>
   );
 };
-
-
-
 const Notifications = () => {
 
   const [showSkillModal, setShowSkillModal] = useState(false);
@@ -174,7 +164,7 @@ const Notifications = () => {
       ) :(
         <>
         {userData? (<div>
-        <h1 className="font-bold text-4xl mb-4 text-[#242E49]">Notifications</h1>
+        <h1 className="font-bold text-4xl mb-4 text-green-600">Notifications</h1>
       <div className='overflow-y-auto max-h-[600px]'>
       {filteredInterviews
   .sort((a: any, b: any) => new Date(b.slot).getTime() - new Date(a.slot).getTime())

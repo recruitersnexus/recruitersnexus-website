@@ -1,27 +1,9 @@
 "use client"
 import { useState, useEffect } from 'react';
 import useUserData from '@/lib/db/userData';
-import { Metadata } from "next";
-import Image from "next/image";
-
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "@/app/dashboard/components/date-range-picker";
-import { MainNav } from "@/app/dashboard/components/main-nav";
-import { Overview } from "@/app/dashboard/components/overview-user";
-import { RecentSales } from "@/app/dashboard/components/recent-sales-user";
-import { Search } from "@/app/dashboard/components/search";
-import { UserNav } from "@/app/dashboard/components/user-nav";
 import { format } from 'date-fns';
-import NavBar from './NavBar';
 import MainUsers from '@/lib/db/mainUsers';
 import InterviewData from '@/lib/db/interviewData';
 import { useRouter } from 'next/navigation';
@@ -31,18 +13,13 @@ import { Flag, Video } from 'lucide-react';
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-
-
-
 const Modal = ({ onClose, onSubmit }: { onClose: () => void, onSubmit: (reason: string) => void }) => {
   const [reason, setReason] = useState("");
-
   const handleSubmit = () => {
     if (reason.trim() === "") {
       toast.error("Please enter a reason.");
@@ -53,7 +30,6 @@ const Modal = ({ onClose, onSubmit }: { onClose: () => void, onSubmit: (reason: 
     setReason("");
     onClose();
   };
-
   return (
     <div className="fixed inset-0 z-10 overflow-y-auto flex items-center justify-center">
       <div className="fixed inset-0 bg-gray-500 bg-opacity-75" onClick={onClose}></div>
@@ -73,8 +49,6 @@ const Modal = ({ onClose, onSubmit }: { onClose: () => void, onSubmit: (reason: 
     </div>
   );
 };
-
-
 const UnconductedUSER = () => {
   const router = useRouter();
   const { userData } = useUserData();
@@ -85,9 +59,7 @@ const UnconductedUSER = () => {
   const { users } = MainUsers();
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-
-
+  const [itemsPerPage] = useState(10);
   const filteredInterviews = interviews.filter((item: any) => item.user_id === userData?.id);
   //console.log("Filtered Interviews at DashboardHR: ", filteredInterviews);
   const totalInterviews = filteredInterviews.filter((item: any) => item.is_confirmed === "confirmed");
@@ -99,14 +71,10 @@ const UnconductedUSER = () => {
   const upcomingSchedules = totalInterviews.filter((item: any) => item.is_conducted === "notConducted").reverse();
   //console.log("Upcoming Schedules: ", upcomingSchedules);
   const filteredHrData = hrTable?.filter((item: any) => item.user_id === userData?.id);
-
-
   const userNotification = users.filter((item: any) =>
     filteredInterviews.map((interview: any) => interview.hr_id).includes(item.id));
   //console.log("UserNotification: ", userNotification);
-
-
-  const currentTime = new Date();
+const currentTime = new Date();
 
 const sortedUpcomingSchedules = upcomingSchedules.sort((a, b) => {
     const dateA = new Date(a.slot);
@@ -261,11 +229,8 @@ const sortedUpcomingSchedules = upcomingSchedules.sort((a, b) => {
 
                       <div className="ml-auto font-medium hidden lg:flex lg:mx-auto md:space-x-16">
                         <div className='flex flex-col space-y-2'><span className='text-md text-[#6D6D6D]'>Date</span>  <span className='text-[#333333]'>{formatDateTime(item.slot).date}</span> </div>
-
                         <div className='flex flex-col space-y-2'><span className='text-md text-[#6D6D6D]'> Time </span>  <span className='text-[#333333]'>{formatDateTime(item.slot).time}</span></div>
-
                       </div>
-
                       <div className='hidden md:flex space-x-6 flex-grow justify-end'>
                         <Button className='bg-[#4765FF] hover:bg-[#4765FF]/80  h-11 rounded-lg ' disabled={isActive === "expired"} onClick={() => onClickJoin(item.id, item.slot)}>{isActive === "online"? "Join Interview": "Expired"}</Button>
                         {showModal && (
@@ -275,18 +240,14 @@ const sortedUpcomingSchedules = upcomingSchedules.sort((a, b) => {
                           />
                         )}
                         <Button className='bg-[#ECF2FF] text-[#4765FF] hover:bg-[#ECF2FF]/80  h-11 rounded-lg' onClick={() => handleReportUser(item.hr_id)}>Report User</Button>
-                        {/* <Button onClick={() => onClickMark(item.user_id, item.slot)}>Mark as Conducted</Button> */}
-                        {/* <Button onClick={() => onClickDelete(item.user_id, item.slot)}>Delete</Button> */}
                       </div>
                     </div>
-
                   );
                 }
               })}
           </div>
         {/* // ))} */}
       </div>
-
       <div className='mt-16'>
       <PaginationSection 
       totalItems={upcomingSchedules.length}
@@ -295,61 +256,48 @@ const sortedUpcomingSchedules = upcomingSchedules.sort((a, b) => {
       setCurrentPage={setCurrentPage}
       />
       </div>
-
     </div>
   )
 }
-
 export default UnconductedUSER
-
-
 function PaginationSection({ totalItems, itemsPerPage, currentPage, setCurrentPage }:{totalItems: any,
   itemsPerPage: any,
   currentPage: any,
   setCurrentPage: any,}
 ) {
-
   let pages = [];
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
     pages.push(i);
   }
-
   const handlePrevPage = () => {
     if(currentPage > 1)
       {
         setCurrentPage(currentPage - 1);
       }
   }
-
   const handleNextPage = () => {
     if(currentPage < pages.length)
       {
         setCurrentPage(currentPage + 1);
       }
   }
-
   return (
     <Pagination>
       <PaginationContent>
         <PaginationItem>
         <PaginationPrevious className='cursor-pointer hover:bg-neutral-200' onClick={()=> handlePrevPage()} />
       </PaginationItem>
-
       {pages.map((page,idx)=>(
         <PaginationItem key={idx} >
       <PaginationLink className={currentPage === page? "bg-[#4765FF] hover:bg-[#4765FF] text-white hover:text-white cursor-pointer rounded-md":"hover:bg-[#4765FF] hover:text-white cursor-pointer"} onClick={()=>setCurrentPage(page)}>
           {page}
       </PaginationLink>
       </PaginationItem>
-
 ))}
-
       <PaginationItem>
         <PaginationNext className='cursor-pointer hover:bg-neutral-200' onClick={()=> handleNextPage()} />
       </PaginationItem> 
       </PaginationContent>
     </Pagination>
   )
-
-
 }

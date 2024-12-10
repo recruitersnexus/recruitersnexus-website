@@ -69,14 +69,7 @@ export default function Pricing() {
               <p className="text-2xl font-bold text-indigo-600">{plan.price}</p>
             </div>
             <div className="flex-grow mb-6">
-              <h4 className="text-lg font-semibold mb-4 text-white">Available Features</h4>
-           </div>
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold mb-2">{plan.title}</h3>
-              <p className="text-2xl font-bold text-indigo-600">{plan.price}</p>
-            </div>
-            <div className="flex-grow mb-6">
-              <h4 className="text-lg font-semibold mb-4">Available Features</h4>
+              <h4 className="text-lg font-semibold mb-4 text-center text-white">Available Features</h4>
               <ul className="text-sm space-y-2">
                 {plan.features.map((feature, i) => (
                   <li

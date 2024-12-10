@@ -707,7 +707,7 @@ function DashboardHR() {
 
           <TabsContent value="notifications" className="bg-[#D7DBEC] h-full">
             <div className='bg-[#D7DBEC]'>
-              <h1 className="font-bold text-2xl mb-4">Notifications</h1>
+              <h1 className="font-bold text-2xl mb-4 text-blue-600">Notifications</h1>
               {userNotification.map((user: any) => (
                 <div key={user.id} className="bg-[#F2F5F9] h-full">
                   {filteredInterviews

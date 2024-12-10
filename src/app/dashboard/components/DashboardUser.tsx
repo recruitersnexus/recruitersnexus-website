@@ -2,8 +2,6 @@
 import { useState, useEffect } from "react";
 import useUserData from "@/lib/db/userData";
 import { Metadata } from "next";
-import Image from "next/image";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,14 +12,8 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "@/app/dashboard/components/date-range-picker";
-import { MainNav } from "@/app/dashboard/components/main-nav";
 import { Overview } from "@/app/dashboard/components/overview-user";
-import { RecentSales } from "@/app/dashboard/components/recent-sales-user";
-import { Search } from "@/app/dashboard/components/search";
-import { UserNav } from "@/app/dashboard/components/user-nav";
 import { format } from "date-fns";
-import NavBar from "./NavBar";
 import MainUsers from "@/lib/db/mainUsers";
 import InterviewData from "@/lib/db/interviewData";
 import { useRouter } from "next/navigation";
@@ -194,23 +186,6 @@ export default function DashboardUser() {
 
   return (
     <div className="bg-[#F5F6FA] font-nunito">
-      {/* <div className="md:hidden">
-        <Image
-          src="/examples/dashboard-light.png"
-          width={1280}
-          height={866}
-          alt="Dashboard"
-          className="block dark:hidden"
-        />
-        <Image
-          src="/examples/dashboard-dark.png"
-          width={1280}
-          height={866}
-          alt="Dashboard"
-          className="hidden dark:block"
-        />
-      </div> */}
-
       {/* <NavBar /> */}
 
       <div className="flex-1 space-y-4 py-8 md:px-8 px-[12px] pt-6 mt-12">
@@ -219,9 +194,7 @@ export default function DashboardUser() {
           <Link className='text-blue-500 hover:text-blue-900' href="https://youtu.be/6dqjBlBdmSk?si=p-mfOQ0qGnzak5A4" target="_blank">How to Use?</Link>
         </div>
         <div className="flex items-center justify-between space-y-2">
-          {/* <div className="flex items-center space-x-2">
-              <CalendarDateRangePicker />
-            </div> */}
+         
         </div>
         <Tabs
           defaultValue="overview"
@@ -229,22 +202,9 @@ export default function DashboardUser() {
         >
           <TabsList className="flex bg-[#F5F6FA] flex-col space-y-4 md:space-y-0 md:flex-row items-start justify-between md:justify-start">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            {/* <TabsTrigger value="h">Statistics</TabsTrigger> */}
-            {/* FOR LATER */}
-            {/* <TabsTrigger value="a">Reports</TabsTrigger> */}
-            {/* <TabsTrigger value="notifications">Notifications</TabsTrigger> */}
-            {/* <TabsTrigger value="interviews">Interviews</TabsTrigger> */}
-
-            {/* <TabsTrigger value="explore" >
-                Explore Experts
-              </TabsTrigger> */}
-            {/* <TabsTrigger value="reports" disabled>
-                Reports
-              </TabsTrigger>
-              <TabsTrigger value="notifications" disabled>
-                Notifications
-              </TabsTrigger> */}
-          </TabsList>
+             </TabsList>
+            
+         
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-0 md:grid-cols-2 lg:grid-cols-3">
               <Card className="rounded-b-none md:rounded-md md:rounded-r-none flex flex-row justify-around">
@@ -429,22 +389,10 @@ export default function DashboardUser() {
               </Card>
             </div>
           </TabsContent>
-          {/* <TabsContent value="explore" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-1">
-                <Card className="col-span-3">
-                  <CardHeader>
-                    <CardTitle>Experts</CardTitle>
-                    <CardDescription>
-                      Quailty experts here
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <RecentSales />
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent> */}
-
+          <TabsContent value="userbell" className="">
+<h1>notifications that belongs to user</h1>
+            </TabsContent>
+          
           {/* Interview Tab */}
           <TabsContent value="interviews" className="">
             <div className="bg-[#F2F5F9]">
@@ -554,8 +502,6 @@ export default function DashboardUser() {
                                 >
                                   Report User
                                 </Button>
-                                {/* <Button onClick={() => onClickMark(item.user_id, item.slot)}>Mark as Conducted</Button> */}
-                                {/* <Button onClick={() => onClickDelete(item.user_id, item.slot)}>Delete</Button> */}
                               </div>
                             </div>
                           );
