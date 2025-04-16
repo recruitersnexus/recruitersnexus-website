@@ -11,3 +11,22 @@
 // });
  
 // export const db = drizzle(connection, { schema });
+
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+import * as schema from "./schema";
+import * as dotenv from 'dotenv';
+
+dotenv.config(); // Ensure environment variables are loaded
+
+if (!process.env.POSTGRES_URL) {
+  throw new Error("❌ Missing POSTGRES_URL in .env file!");
+}
+
+const pool = new Pool({
+  connectionString: process.env.POSTGRES_URL, // Ensure this comes from .env
+});
+
+export const db = drizzle(pool, { schema });
+
+console.log("✅ Database connected (Local)");

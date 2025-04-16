@@ -10,6 +10,8 @@ import {
   integer,
   bigint,
   decimal as pgDecimal,
+  numeric,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { decimal } from "drizzle-orm/mysql-core";
 
@@ -195,3 +197,32 @@ export const JobSkillTable = pgTable("job_skill", {
 //   const selectResult = await db.select().from(userTable);
 //   //console.log('Results', selectResult);
 // };
+
+export const transactions = pgTable('transactions', {
+    id: serial('id').primaryKey(),
+    userId: text("user_id").notNull(),
+    plan: text("plan").notNull(),
+    txnRefNo: text('txn_ref_no').unique().notNull(),
+    amount: numeric("amount", { precision: 10, scale: 2 }).notNull(), // Allow decimal,
+    currency: text('currency').default('PKR'),
+    status: text('status').default('PENDING'),
+    createdAt: timestamp('created_at').defaultNow(),
+    updatedAt: timestamp('updated_at').defaultNow(),
+    requestBody: jsonb('request_body'),
+    responseBody: jsonb('response_body')
+});
+
+export const transactionHistory = pgTable('transaction_history', {
+  id: serial('id').primaryKey(),
+  userId: text("user_id").notNull(),
+  plan: text("plan").notNull(),
+  txnRefNo: text('txn_ref_no').notNull().references(() => transactions.txnRefNo, { onDelete: "cascade" }),
+  amount: numeric("amount", { precision: 10, scale: 2 }).notNull(),
+  currency: text('currency').default('PKR'),
+  status: text('status').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+  changedAt: timestamp('changed_at').defaultNow(),
+  requestBody: jsonb('request_body'),
+  responseBody: jsonb('response_body')
+});
