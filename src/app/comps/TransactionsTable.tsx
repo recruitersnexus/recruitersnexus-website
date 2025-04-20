@@ -1,23 +1,44 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const TransactionsTable = ({ userId, role }: { userId: string; role: "admin" | "user" }) => {
-  const [transactions, setTransactions] = useState([]);
+type Transaction = {
+  id: number;
+  txnRefNo: string;
+  amount: number;
+  status: string;
+};
+
+const TransactionsTable = ({
+  userId,
+  role
+}: {
+  userId: string;
+  role: "admin" | "user";
+}) => {
+  // const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const response = await fetch(`/api/transactions?userId=${userId}&role=${role}`);
-      const data = await response.json();
+      const response = await fetch(
+        `/api/transactions?userId=${userId}&role=${role}`
+      );
+      // const data = await response.json();
+      const data: { success: boolean; transactions: Transaction[] } =
+        await response.json();
       if (data.success) setTransactions(data.transactions);
     };
     fetchTransactions();
   }, []);
 
-  const handleRefund = async (transactionId: number, action?: "approve" | "reject") => {
+  const handleRefund = async (
+    transactionId: number,
+    action?: "approve" | "reject"
+  ) => {
     const response = await fetch("/api/transactions/refund", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ transactionId, role, action }),
+      body: JSON.stringify({ transactionId, role, action })
     });
 
     const data = await response.json();
