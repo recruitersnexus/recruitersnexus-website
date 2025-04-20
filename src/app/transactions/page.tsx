@@ -15,13 +15,13 @@ const TransactionsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const transactionsPerPage = 20;
   const [totalPages, setTotalPages] = useState(1);
-  const [statusCounts, setStatusCounts] = useState({
+  const [statusCounts, setStatusCounts] = useState<{ [key: string]: number }>({
     success: 0,
     failed: 0,
     pending: 0,
     refunded: 0
   });
-  const [totalAmounts, setTotalAmounts] = useState({
+  const [totalAmounts, setTotalAmounts] = useState<{ [key: string]: number }>({
     success: 0,
     failed: 0,
     pending: 0,
