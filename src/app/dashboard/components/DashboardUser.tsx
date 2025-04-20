@@ -203,8 +203,6 @@ export default function DashboardUser() {
           <TabsList className="flex bg-[#F5F6FA] flex-col space-y-4 md:space-y-0 md:flex-row items-start justify-between md:justify-start">
             <TabsTrigger value="overview">Overview</TabsTrigger>
              </TabsList>
-            
-         
           <TabsContent value="overview" className="space-y-4">
             <div className="grid gap-0 md:grid-cols-2 lg:grid-cols-3">
               <Card className="rounded-b-none md:rounded-md md:rounded-r-none flex flex-row justify-around">

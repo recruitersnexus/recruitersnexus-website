@@ -11,6 +11,7 @@ interface UserData {
     password:string;
     image:string;
     role: string;
+    plan: string;
     createdAt: Date;
 
     // Add other properties as needed

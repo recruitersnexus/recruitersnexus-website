@@ -5,8 +5,8 @@ import bcryptjs from "bcryptjs";
 import * as schema from "@/lib/db/schema";
 import { drizzle } from "drizzle-orm/vercel-postgres";
 import { sql } from "@vercel/postgres";
-
-const db = drizzle(sql, { schema });
+import { db } from "@/lib/db/db"; // ✅ Import from the common file
+// const db = drizzle(sql, { schema });
 
 
 export async function POST(request: Request) {
@@ -15,17 +15,17 @@ export async function POST(request: Request) {
   const reqBody = await request.json();
   // await db.insert(userTable).values(reqBody);
   const { username, email, password, role} = reqBody;
-  // //console.log(reqBody);
 
-  // //check if user already exists
-  const checkUser = await db.query.userTable2.findFirst({
-    where: eq(schema.userTable2.email, reqBody.email),
-  });
+ console.log("Checking if user exists in DB...");
+    const checkUser = await db.query.userTable2.findFirst({
+      where: eq(schema.userTable2.email, reqBody.email),
+    });
 
-  if (checkUser) {
-    return NextResponse.json({ error: "User already exists" }, { status: 400 });
-  }
+    console.log("Query executed. CheckUser:", checkUser); // ✅ Debug log
 
+    if (checkUser) {
+      return NextResponse.json({ error: "User already exists" }, { status: 400 });
+    }
   //hash password
   const salt = await bcryptjs.genSalt(10);
   const hashedPassword = await bcryptjs.hash(password, salt);
