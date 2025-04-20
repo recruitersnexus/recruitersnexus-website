@@ -2,7 +2,7 @@
 import useUserData from "@/lib/db/userData";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
-import { Home } from "lucide-react";
+import { CreditCard, Home } from "lucide-react";
 import { TfiMenuAlt } from "react-icons/tfi";
 import { AiOutlineTag } from "react-icons/ai";
 import { PiMedal } from "react-icons/pi";
@@ -65,14 +65,13 @@ const SideBar = ({ slug }: { slug: string }) => {
                 />
               </div>
 
-            <div className="flex flex-col space-y-6 items-center">
-              <div className=" flex flex-col items-center">
-                <h1 className="text-md md:text-2xl font-bold text-[#242E49] mt-6">
-                  {userData?.username}
-                </h1>
-                <span>{userData?.email}</span>
-
-              </div>
+              <div className="flex flex-col space-y-6 items-center">
+                <div className=" flex flex-col items-center">
+                  <h1 className="text-md md:text-2xl font-bold text-[#242E49] mt-6">
+                    {userData?.username}
+                  </h1>
+                  <span>{userData?.email}</span>
+                </div>
 
                 <div className=" flex flex-col items-left">
                   {userData?.role === "hr" && (
@@ -105,29 +104,33 @@ const SideBar = ({ slug }: { slug: string }) => {
                   ? "bg-[#4765FF] rounded-md text-white"
                   : "bg-transparent hover:rounded-md hover:text-white text-black"
               } flex items-center justify-center md:justify-stretch self-center  px-0 md:px-2 py-0  md:py-3 hover:bg-[#4765FF]   `}
-          >
-            <Home className="mx-4" size={24} />{" "}
-            <span className="hidden md:block">Dashboard</span>
-          </button>
-          <button
-            onClick={() => onClick("interviews")}
-            className={`md:w-full w-16 h-16 md:h-full ${slug === "interviews" || slug === "interview-report"
-                ? "bg-[#4765FF] rounded-md text-white"
-                : "bg-transparent hover:rounded-md hover:text-white text-black"
-              } ${userData?.role === "admin" ? "hidden" : ""
+            >
+              <Home className="mx-4" size={24} />{" "}
+              <span className="hidden md:block">Dashboard</span>
+            </button>
+            <button
+              onClick={() => onClick("interviews")}
+              className={`md:w-full w-16 h-16 md:h-full ${
+                slug === "interviews" || slug === "interview-report"
+                  ? "bg-[#4765FF] rounded-md text-white"
+                  : "bg-transparent hover:rounded-md hover:text-white text-black"
+              } ${
+                userData?.role === "admin" ? "hidden" : ""
               }  flex items-center justify-center md:justify-stretch self-center  px-0 md:px-2 py-0  md:py-3 hover:bg-[#4765FF]   `}
-          >
-            <TfiMenuAlt className="mx-4" size={24} />{" "}
-            <span className="hidden md:block">Interviews</span>
-          </button>
-          <button
-            onClick={() => onClick("exploreExpert")}
-            className={`md:w-full w-16 h-16 md:h-full ${slug === "exploreExpert" || slug === "scheduleInterview"
-                ? "bg-[#4765FF] rounded-md text-white"
-                : "bg-transparent hover:rounded-md hover:text-white text-black"
-              } ${userData?.role === "user" || userData?.role === "admin"
-                ? ""
-                : "hidden"
+            >
+              <TfiMenuAlt className="mx-4" size={24} />{" "}
+              <span className="hidden md:block">Interviews</span>
+            </button>
+            <button
+              onClick={() => onClick("exploreExpert")}
+              className={`md:w-full w-16 h-16 md:h-full ${
+                slug === "exploreExpert" || slug === "scheduleInterview"
+                  ? "bg-[#4765FF] rounded-md text-white"
+                  : "bg-transparent hover:rounded-md hover:text-white text-black"
+              } ${
+                userData?.role === "user" || userData?.role === "admin"
+                  ? ""
+                  : "hidden"
               } flex items-center justify-center md:justify-stretch self-center  px-0 md:px-2 py-0  md:py-3 hover:bg-[#4765FF]   `}
             >
               <AiOutlineTag className="mx-4" size={24} />{" "}
@@ -136,10 +139,11 @@ const SideBar = ({ slug }: { slug: string }) => {
 
             {/* Transaction tab start */}
             <button
-            onClick={() => onClick("transactions")}
-            className={`md:w-full w-16 h-16 md:h-full bg-transparent hover:rounded-md hover:text-white text-black flex items-center justify-center md:justify-stretch self-center  px-0 md:px-2 py-0  md:py-3 hover:bg-[#4765FF]`}>
-              <AiOutlineTag className="mx-4" size={24} />{" "}
-              <span className="hidden md:block">Transactions</span>
+              onClick={() => onClick("transactions")}
+              className="w-full md:h-full h-16 bg-transparent hover:rounded-md hover:text-white text-black flex items-center justify-center px-2 py-3 hover:bg-[#4765FF]"
+            >
+              <CreditCard className="mr-2" size={24} />
+              <span className="hidden md:inline">Transactions</span>
             </button>
             {/* Transaction tab end */}
 
@@ -255,8 +259,10 @@ const SideBar = ({ slug }: { slug: string }) => {
             </button>
           </div>
         </div>
-      ) : (<div className="h-full self-center flex items-center">
-        <SkeletonLoaderResNavbar /></div>
+      ) : (
+        <div className="h-full self-center flex items-center">
+          <SkeletonLoaderResNavbar />
+        </div>
       )}
     </div>
   );
