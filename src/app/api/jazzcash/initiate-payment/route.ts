@@ -124,25 +124,43 @@ export async function POST(req: Request) {
       if (isRetry && txnRefNo) {
         console.log("Processing retry for transaction:", txnRefNo);
 
-        // Delete the old transaction
-        await db
-          .delete(transactions)
-          .where(eq(transactions.txnRefNo, txnRefNo));
+        try {
+          // First, delete any related records in transaction_history
+          await db
+            .delete(transactionHistory)
+            .where(eq(transactionHistory.txnRefNo, txnRefNo));
+          console.log("Transaction history records deleted successfully");
 
-        console.log("Old transaction deleted successfully");
+          // Then delete the main transaction
+          const deleteResult = await db
+            .delete(transactions)
+            .where(eq(transactions.txnRefNo, txnRefNo));
+          console.log("Old transaction deleted successfully:", deleteResult);
 
-        // Insert new transaction for retry
-        await db.insert(transactions).values({
-          userId,
-          plan,
-          txnRefNo: newTxnRefNo,
-          amount,
-          status: "pending",
-          requestBody: paramsWithHash,
-          responseBody: {}
-        });
-
-        console.log("New transaction inserted successfully for retry");
+          // Insert new transaction for retry
+          await db.insert(transactions).values({
+            userId,
+            plan,
+            txnRefNo: newTxnRefNo,
+            amount,
+            status: "pending",
+            requestBody: paramsWithHash,
+            responseBody: {}
+          });
+          console.log("New transaction inserted successfully for retry");
+        } catch (deleteError) {
+          console.error(
+            "Error during transaction deletion/insertion:",
+            deleteError
+          );
+          return NextResponse.json(
+            {
+              error: "Failed to process retry transaction",
+              details: deleteError
+            },
+            { status: 500 }
+          );
+        }
       } else {
         console.log("Inserting new transaction");
         // Insert new transaction for first attempt

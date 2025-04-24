@@ -11,16 +11,21 @@ const SuccessPage = () => {
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
-      const txnRefNo = searchParams.get("pp_TxnRefNo");
-      const responseCode = searchParams.get("pp_ResponseCode");
-
-      if (!txnRefNo) {
-        toast.error("Transaction reference missing.");
-        setStatus("error");
-        return;
-      }
-
       try {
+        // Get all search params
+        const params = Object.fromEntries(searchParams.entries());
+        console.log("Payment Status Params:", params);
+
+        const txnRefNo = params.pp_TxnRefNo;
+        const responseCode = params.pp_ResponseCode;
+
+        if (!txnRefNo) {
+          console.error("Transaction reference missing");
+          toast.error("Transaction reference missing.");
+          setStatus("error");
+          return;
+        }
+
         // First, verify the payment with JazzCash
         const verifyResponse = await fetch("/api/jazzcash/verify-payment", {
           method: "POST",
@@ -28,18 +33,32 @@ const SuccessPage = () => {
           body: JSON.stringify({
             pp_TxnRefNo: txnRefNo,
             pp_ResponseCode: responseCode,
-            pp_SecureHash: searchParams.get("pp_SecureHash")
+            pp_SecureHash: params.pp_SecureHash,
+            ...params // Include all other params
           })
         });
 
+        if (!verifyResponse.ok) {
+          throw new Error(`Verification failed: ${verifyResponse.statusText}`);
+        }
+
         const verifyData = await verifyResponse.json();
+        console.log("Verification Response:", verifyData);
 
         if (verifyData.success) {
           // Get the updated transaction status
           const statusResponse = await fetch(
             `/api/jazzcash/get-transaction?txnRefNo=${txnRefNo}`
           );
+
+          if (!statusResponse.ok) {
+            throw new Error(
+              `Status check failed: ${statusResponse.statusText}`
+            );
+          }
+
           const statusData = await statusResponse.json();
+          console.log("Status Response:", statusData);
 
           if (statusData.success) {
             setStatus(statusData.status);
@@ -58,16 +77,20 @@ const SuccessPage = () => {
               }, 3000);
             }
           } else {
-            toast.error("Failed to fetch transaction status.");
+            console.error("Status check failed:", statusData.error);
+            toast.error(
+              statusData.error || "Failed to fetch transaction status."
+            );
             setStatus("error");
           }
         } else {
-          toast.error("Payment verification failed.");
+          console.error("Verification failed:", verifyData.error);
+          toast.error(verifyData.error || "Payment verification failed.");
           setStatus("error");
         }
       } catch (error) {
         console.error("Payment Status Check Error:", error);
-        toast.error("Error checking payment status.");
+        toast.error("Error checking payment status. Please try again.");
         setStatus("error");
       }
     };
@@ -146,6 +169,12 @@ const SuccessPage = () => {
             <p className="text-sm mt-2">
               Something went wrong. Please try again.
             </p>
+            <button
+              onClick={() => router.push("/transactions")}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Go to Transactions
+            </button>
           </div>
         )}
       </div>

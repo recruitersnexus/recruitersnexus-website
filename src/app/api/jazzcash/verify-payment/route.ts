@@ -6,11 +6,23 @@ import crypto from "crypto";
 
 export async function POST(req: Request) {
   try {
-    const { pp_TxnRefNo, pp_ResponseCode, pp_SecureHash } = await req.json();
+    const body = await req.json();
+    console.log("Verifying payment request:", body);
+
+    const { pp_TxnRefNo, pp_ResponseCode, pp_SecureHash } = body;
 
     if (!pp_TxnRefNo) {
+      console.error("Missing transaction reference");
       return NextResponse.json(
         { success: false, error: "Invalid transaction reference." },
+        { status: 400 }
+      );
+    }
+
+    if (!pp_ResponseCode) {
+      console.error("Missing response code");
+      return NextResponse.json(
+        { success: false, error: "Invalid response code." },
         { status: 400 }
       );
     }
@@ -21,6 +33,7 @@ export async function POST(req: Request) {
     });
 
     if (!transaction) {
+      console.error("Transaction not found:", pp_TxnRefNo);
       return NextResponse.json(
         { success: false, error: "Transaction not found." },
         { status: 404 }
@@ -29,26 +42,37 @@ export async function POST(req: Request) {
 
     // Determine transaction status based on response code
     const newStatus = pp_ResponseCode === "000" ? "success" : "failed";
+    console.log("Transaction status:", newStatus);
 
-    // Update transaction in DB
-    await db
-      .update(transactions)
-      .set({
+    try {
+      // Update transaction in DB
+      await db
+        .update(transactions)
+        .set({
+          status: newStatus,
+          responseBody: JSON.stringify({
+            ...body,
+            verifiedAt: new Date().toISOString()
+          }),
+          updatedAt: new Date()
+        })
+        .where(eq(transactions.txnRefNo, pp_TxnRefNo));
+
+      console.log("Transaction updated successfully");
+
+      return NextResponse.json({
+        success: true,
+        message: "Transaction verified successfully.",
         status: newStatus,
-        responseBody: JSON.stringify({
-          pp_TxnRefNo,
-          pp_ResponseCode,
-          pp_SecureHash,
-          verifiedAt: new Date().toISOString()
-        }),
-        updatedAt: new Date()
-      })
-      .where(eq(transactions.txnRefNo, pp_TxnRefNo));
-    return NextResponse.json({
-      success: true,
-      message: "Transaction verified successfully.",
-      status: newStatus
-    });
+        transactionId: transaction.id
+      });
+    } catch (dbError) {
+      console.error("Database update failed:", dbError);
+      return NextResponse.json(
+        { success: false, error: "Failed to update transaction status." },
+        { status: 500 }
+      );
+    }
   } catch (error) {
     console.error("JazzCash Verification Error:", error);
     return NextResponse.json(
