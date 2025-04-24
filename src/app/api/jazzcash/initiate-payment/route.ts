@@ -83,7 +83,7 @@ export async function POST(req: Request) {
       pp_Language: "EN",
       pp_MerchantID: process.env.JAZZCASH_MERCHANT_ID!,
       pp_Password: process.env.JAZZCASH_PASSWORD!,
-      pp_ReturnURL: `${process.env.NEXT_PUBLIC_URL}/payment-status`,
+      pp_ReturnURL: `${process.env.NEXT_PUBLIC_URL}/api/jazzcash/payment-callback`,
       pp_SubMerchantID: "",
       pp_TxnCurrency: "PKR",
       pp_TxnDateTime: new Date().toISOString().replace(/\D/g, "").slice(0, 14),
