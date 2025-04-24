@@ -10,6 +10,14 @@ dotenv.config();
 export async function POST(req: Request) {
   try {
     const { amount, userId, plan, isRetry, txnRefNo } = await req.json();
+    console.log("Received request:", {
+      amount,
+      userId,
+      plan,
+      isRetry,
+      txnRefNo
+    });
+
     if (!amount || !userId || !plan) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -19,11 +27,13 @@ export async function POST(req: Request) {
 
     // If this is a retry and txnRefNo is provided, check the original transaction
     if (isRetry && txnRefNo) {
+      console.log("Processing retry for transaction:", txnRefNo);
       const originalTransaction = await db.query.transactions.findFirst({
         where: eq(transactions.txnRefNo, txnRefNo)
       });
 
       if (!originalTransaction) {
+        console.log("Original transaction not found:", txnRefNo);
         return NextResponse.json(
           { success: false, error: "Original transaction not found" },
           { status: 404 }
@@ -32,6 +42,10 @@ export async function POST(req: Request) {
 
       // Verify the transaction belongs to the user
       if (originalTransaction.userId !== userId) {
+        console.log("Unauthorized access attempt:", {
+          userId,
+          transactionUserId: originalTransaction.userId
+        });
         return NextResponse.json(
           { success: false, error: "Unauthorized access to transaction" },
           { status: 403 }
@@ -106,40 +120,52 @@ export async function POST(req: Request) {
     // Add pp_SecureHash to request body
     const paramsWithHash = { ...params, pp_SecureHash: secureHash };
 
-    if (isRetry && txnRefNo) {
-      // Update existing transaction for retry
-      await db
-        .update(transactions)
-        .set({
+    try {
+      if (isRetry && txnRefNo) {
+        console.log("Updating existing transaction:", txnRefNo);
+        // Update existing transaction for retry
+        await db
+          .update(transactions)
+          .set({
+            txnRefNo: newTxnRefNo,
+            status: "pending",
+            requestBody: paramsWithHash,
+            responseBody: {},
+            updatedAt: new Date()
+          })
+          .where(eq(transactions.txnRefNo, txnRefNo));
+        console.log("Transaction updated successfully");
+      } else {
+        console.log("Inserting new transaction");
+        // Insert new transaction for first attempt
+        await db.insert(transactions).values({
+          userId,
+          plan,
           txnRefNo: newTxnRefNo,
+          amount,
           status: "pending",
           requestBody: paramsWithHash,
-          responseBody: {},
-          updatedAt: new Date()
-        })
-        .where(eq(transactions.txnRefNo, txnRefNo));
-    } else {
-      // Insert new transaction for first attempt
-      await db.insert(transactions).values({
-        userId,
-        plan,
-        txnRefNo: newTxnRefNo,
-        amount,
-        status: "pending",
-        requestBody: paramsWithHash,
-        responseBody: {}
-      });
-    }
+          responseBody: {}
+        });
+        console.log("New transaction inserted successfully");
+      }
 
-    return NextResponse.json({
-      success: true,
-      paymentUrl: process.env.JAZZCASH_ENDPOINT,
-      params: paramsWithHash
-    });
+      return NextResponse.json({
+        success: true,
+        paymentUrl: process.env.JAZZCASH_ENDPOINT,
+        params: paramsWithHash
+      });
+    } catch (dbError) {
+      console.error("Database operation failed:", dbError);
+      return NextResponse.json(
+        { error: "Failed to process transaction", details: dbError },
+        { status: 500 }
+      );
+    }
   } catch (error) {
     console.error("Payment Error:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: "Internal Server Error", details: error },
       { status: 500 }
     );
   }
