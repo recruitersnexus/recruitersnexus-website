@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { db } from "@/lib/db/db";
-import { transactions } from "@/lib/db/schema";
+import { transactions, transactionHistory } from "@/lib/db/schema";
 import * as dotenv from "dotenv";
 import { and, eq } from "drizzle-orm";
 
@@ -123,7 +123,19 @@ export async function POST(req: Request) {
     try {
       if (isRetry && txnRefNo) {
         console.log("Updating existing transaction:", txnRefNo);
-        // Update existing transaction for retry
+
+        // First, update the transaction history
+        await db
+          .update(transactionHistory)
+          .set({
+            txnRefNo: newTxnRefNo,
+            updatedAt: new Date()
+          })
+          .where(eq(transactionHistory.txnRefNo, txnRefNo));
+
+        console.log("Transaction history updated successfully");
+
+        // Then update the main transaction
         await db
           .update(transactions)
           .set({
@@ -134,7 +146,8 @@ export async function POST(req: Request) {
             updatedAt: new Date()
           })
           .where(eq(transactions.txnRefNo, txnRefNo));
-        console.log("Transaction updated successfully");
+
+        console.log("Main transaction updated successfully");
       } else {
         console.log("Inserting new transaction");
         // Insert new transaction for first attempt
