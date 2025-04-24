@@ -9,7 +9,7 @@ dotenv.config();
 
 export async function POST(req: Request) {
   try {
-    const { amount, userId, plan } = await req.json();
+    const { amount, userId, plan, isRetry, txnRefNo } = await req.json();
     if (!amount || !userId || !plan) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -17,23 +17,47 @@ export async function POST(req: Request) {
       );
     }
 
-    // Check if the user already purchased the plan
-    const existingTransaction = await db.query.transactions.findFirst({
-      where: and(
-        eq(transactions.userId, userId),
-        eq(transactions.plan, plan),
-        eq(transactions.status, "success")
-      )
-    });
+    // If this is a retry and txnRefNo is provided, check the original transaction
+    if (isRetry && txnRefNo) {
+      const originalTransaction = await db.query.transactions.findFirst({
+        where: eq(transactions.txnRefNo, txnRefNo)
+      });
 
-    if (existingTransaction) {
-      return NextResponse.json(
-        { success: false, error: `User already purchased '${plan}' Plan.` },
-        { status: 400 }
-      );
+      if (!originalTransaction) {
+        return NextResponse.json(
+          { success: false, error: "Original transaction not found" },
+          { status: 404 }
+        );
+      }
+
+      // Verify the transaction belongs to the user
+      if (originalTransaction.userId !== userId) {
+        return NextResponse.json(
+          { success: false, error: "Unauthorized access to transaction" },
+          { status: 403 }
+        );
+      }
     }
 
-    const txnRefNo = `T${Date.now()}`;
+    // Check if the user already purchased the plan (only for new transactions)
+    if (!isRetry) {
+      const existingTransaction = await db.query.transactions.findFirst({
+        where: and(
+          eq(transactions.userId, userId),
+          eq(transactions.plan, plan),
+          eq(transactions.status, "success")
+        )
+      });
+
+      if (existingTransaction) {
+        return NextResponse.json(
+          { success: false, error: `User already purchased '${plan}' Plan.` },
+          { status: 400 }
+        );
+      }
+    }
+
+    const newTxnRefNo = `T${Date.now()}`;
     const integritySalt = process.env.JAZZCASH_INTEGRITY_SALT!;
     const formattedAmount = (amount * 100).toFixed(0); // Convert to paisa
 
@@ -45,7 +69,7 @@ export async function POST(req: Request) {
       pp_Language: "EN",
       pp_MerchantID: process.env.JAZZCASH_MERCHANT_ID!,
       pp_Password: process.env.JAZZCASH_PASSWORD!,
-      pp_ReturnURL: `${process.env.NEXT_PUBLIC_URL}/api/webhook/jazzcash`,
+      pp_ReturnURL: `${process.env.NEXT_PUBLIC_URL}/payment-status`,
       pp_SubMerchantID: "",
       pp_TxnCurrency: "PKR",
       pp_TxnDateTime: new Date().toISOString().replace(/\D/g, "").slice(0, 14),
@@ -53,19 +77,19 @@ export async function POST(req: Request) {
         .toISOString()
         .replace(/\D/g, "")
         .slice(0, 14),
-      pp_TxnRefNo: txnRefNo,
+      pp_TxnRefNo: newTxnRefNo,
       pp_TxnType: "MIGS",
       pp_Version: "1.1",
       ppmpf_1: "1",
       ppmpf_2: "2",
       ppmpf_3: "3",
       ppmpf_4: "4",
-      ppmpf_5: "5",
+      ppmpf_5: "5"
     };
 
     // ✅ Sort parameters alphabetically by key (ASCII order)
     const sortedKeys = Object.keys(params).sort();
-    
+
     // ✅ Construct Secure Hash String: Shared Secret + sorted params (key=value format)
     const sortedString =
       integritySalt +
@@ -82,23 +106,35 @@ export async function POST(req: Request) {
     // Add pp_SecureHash to request body
     const paramsWithHash = { ...params, pp_SecureHash: secureHash };
 
-    // Save transaction in DB (uncomment when ready)
-    await db.insert(transactions).values({
-      userId,
-      plan,
-      txnRefNo,
-      amount,
-      status: "pending",
-      requestBody: paramsWithHash,
-      responseBody: {},
-    });
-
-    // console.log("✅ JazzCash Payment Hash:", secureHash);
+    if (isRetry && txnRefNo) {
+      // Update existing transaction for retry
+      await db
+        .update(transactions)
+        .set({
+          txnRefNo: newTxnRefNo,
+          status: "pending",
+          requestBody: paramsWithHash,
+          responseBody: {},
+          updatedAt: new Date()
+        })
+        .where(eq(transactions.txnRefNo, txnRefNo));
+    } else {
+      // Insert new transaction for first attempt
+      await db.insert(transactions).values({
+        userId,
+        plan,
+        txnRefNo: newTxnRefNo,
+        amount,
+        status: "pending",
+        requestBody: paramsWithHash,
+        responseBody: {}
+      });
+    }
 
     return NextResponse.json({
       success: true,
       paymentUrl: process.env.JAZZCASH_ENDPOINT,
-      params: paramsWithHash,
+      params: paramsWithHash
     });
   } catch (error) {
     console.error("Payment Error:", error);

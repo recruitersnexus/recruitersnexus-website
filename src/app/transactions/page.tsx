@@ -8,6 +8,7 @@ import TransactionModal from "../comps/ui/TransactionModal";
 import InquiryModal from "../comps/ui/InquiryModal";
 
 const TransactionsPage = () => {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const { userData } = useUserData();
   const [role, setRole] = useState<string>("");
@@ -141,6 +142,45 @@ const TransactionsPage = () => {
     } catch (error) {
       console.error("Inquiry Error:", error);
       toast.error("Error fetching inquiry.");
+    }
+  };
+  const handleRetryPayment = async (txn: any) => {
+    try {
+      const response = await fetch("/api/jazzcash/initiate-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: txn.amount,
+          userId: txn.userId,
+          plan: txn.plan,
+          ...(txn.txnRefNo && { txnRefNo: txn.txnRefNo }),
+          isRetry: true
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.paymentUrl) {
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = data.paymentUrl;
+
+        Object.keys(data.params).forEach((key) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = key;
+          input.value = data.params[key];
+          form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+      } else {
+        toast.error(data.error || "Failed to retry payment.");
+      }
+    } catch (error) {
+      console.error("Retry Payment Error:", error);
+      toast.error("Error retrying payment.");
     }
   };
 
@@ -282,6 +322,16 @@ const TransactionsPage = () => {
                           Request Refund
                         </button>
                       )}
+                      {(txn.status === "pending" || txn.status === "failed") &&
+                        role === "user" && (
+                          <button
+                            className="bg-orange-500 text-white px-2 py-1 rounded"
+                            onClick={() => handleRetryPayment(txn)}
+                          >
+                            Retry Payment
+                          </button>
+                        )}
+
                       {role === "admin" &&
                         txn.status === "refund_requested" && (
                           <>
