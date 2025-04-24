@@ -4,6 +4,7 @@ import { db } from "@/lib/db/db";
 import { transactions, transactionHistory } from "@/lib/db/schema";
 import * as dotenv from "dotenv";
 import { and, eq } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 
 dotenv.config();
 
@@ -125,6 +126,21 @@ export async function POST(req: Request) {
         console.log("Processing retry for transaction:", txnRefNo);
 
         try {
+          // First verify the transaction exists
+          const existingTransaction = await db.query.transactions.findFirst({
+            where: eq(transactions.txnRefNo, txnRefNo)
+          });
+
+          console.log("Existing transaction found:", existingTransaction);
+
+          if (!existingTransaction) {
+            console.error("Transaction not found for deletion:", txnRefNo);
+            return NextResponse.json(
+              { error: "Transaction not found for deletion" },
+              { status: 404 }
+            );
+          }
+
           // Then delete the main transaction
           console.log(
             "Attempting to delete transaction with txnRefNo:",
@@ -141,9 +157,12 @@ export async function POST(req: Request) {
             params: deleteQuery.params
           });
 
-          const deleteResult = await db
-            .delete(transactions)
-            .where(eq(transactions.txnRefNo, txnRefNo));
+          // Execute raw SQL to ensure case sensitivity is handled
+          const deleteResult = await db.execute(sql`
+            DELETE FROM transactions 
+            WHERE txn_ref_no = ${txnRefNo}
+            RETURNING *
+          `);
 
           console.log("Delete Result:", {
             command: deleteResult.command,
