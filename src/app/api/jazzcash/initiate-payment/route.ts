@@ -125,16 +125,25 @@ export async function POST(req: Request) {
         console.log("Processing retry for transaction:", txnRefNo);
 
         try {
-          // First, delete any related records in transaction_history
-          await db
-            .delete(transactionHistory)
-            .where(eq(transactionHistory.txnRefNo, txnRefNo));
-          console.log("Transaction history records deleted successfully");
+          // Get the existing transaction to get its ID
+          const existingTransaction = await db.query.transactions.findFirst({
+            where: eq(transactions.txnRefNo, txnRefNo)
+          });
 
-          // Then delete the main transaction
+          if (!existingTransaction) {
+            console.error("Transaction not found for deletion:", txnRefNo);
+            return NextResponse.json(
+              { error: "Transaction not found for deletion" },
+              { status: 404 }
+            );
+          }
+
+          console.log("Found transaction to delete:", existingTransaction);
+
+          // Delete the transaction using its ID
           const deleteResult = await db
             .delete(transactions)
-            .where(eq(transactions.txnRefNo, txnRefNo));
+            .where(eq(transactions.id, existingTransaction.id));
           console.log("Old transaction deleted successfully:", deleteResult);
 
           // Insert new transaction for retry
