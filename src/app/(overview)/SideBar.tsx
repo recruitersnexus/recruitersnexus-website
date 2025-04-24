@@ -142,7 +142,7 @@ const SideBar = ({ slug }: { slug: string }) => {
               onClick={() => onClick("transactions")}
               className="w-full md:h-full h-16 bg-transparent hover:rounded-md hover:text-white text-black flex items-center justify-center px-2 py-3 hover:bg-[#4765FF]"
             >
-              <CreditCard className="mr-2" size={24} />
+              <CreditCard className="mx-4" size={24} />
               <span className="hidden md:inline">Transactions</span>
             </button>
             {/* Transaction tab end */}
