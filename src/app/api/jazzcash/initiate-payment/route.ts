@@ -122,21 +122,27 @@ export async function POST(req: Request) {
 
     try {
       if (isRetry && txnRefNo) {
-        console.log("Updating existing transaction:", txnRefNo);
+        console.log("Processing retry for transaction:", txnRefNo);
 
-        // First, update the main transaction
+        // Delete the old transaction
         await db
-          .update(transactions)
-          .set({
-            txnRefNo: newTxnRefNo,
-            status: "pending",
-            requestBody: paramsWithHash,
-            responseBody: {},
-            updatedAt: new Date()
-          })
+          .delete(transactions)
           .where(eq(transactions.txnRefNo, txnRefNo));
 
-        console.log("Main transaction updated successfully");
+        console.log("Old transaction deleted successfully");
+
+        // Insert new transaction for retry
+        await db.insert(transactions).values({
+          userId,
+          plan,
+          txnRefNo: newTxnRefNo,
+          amount,
+          status: "pending",
+          requestBody: paramsWithHash,
+          responseBody: {}
+        });
+
+        console.log("New transaction inserted successfully for retry");
       } else {
         console.log("Inserting new transaction");
         // Insert new transaction for first attempt
