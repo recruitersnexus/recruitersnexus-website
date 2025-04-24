@@ -124,18 +124,7 @@ export async function POST(req: Request) {
       if (isRetry && txnRefNo) {
         console.log("Updating existing transaction:", txnRefNo);
 
-        // First, update the transaction history
-        await db
-          .update(transactionHistory)
-          .set({
-            txnRefNo: newTxnRefNo,
-            updatedAt: new Date()
-          })
-          .where(eq(transactionHistory.txnRefNo, txnRefNo));
-
-        console.log("Transaction history updated successfully");
-
-        // Then update the main transaction
+        // First, update the main transaction
         await db
           .update(transactions)
           .set({
