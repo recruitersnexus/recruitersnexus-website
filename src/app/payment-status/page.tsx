@@ -1,4 +1,6 @@
-"use client"; // Ensure it's a client component
+export const dynamic = "force-dynamic"; // This disables caching
+
+("use client"); // Ensure it's a client component
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
