@@ -126,18 +126,41 @@ export async function POST(req: Request) {
 
         try {
           // Then delete the main transaction
+          console.log(
+            "Attempting to delete transaction with txnRefNo:",
+            txnRefNo
+          );
+
+          const deleteQuery = db
+            .delete(transactions)
+            .where(eq(transactions.txnRefNo, txnRefNo))
+            .toSQL();
+
+          console.log("Delete Query:", {
+            sql: deleteQuery.sql,
+            params: deleteQuery.params
+          });
+
           const deleteResult = await db
             .delete(transactions)
             .where(eq(transactions.txnRefNo, txnRefNo));
-          console.log("Old transaction deleted successfully:", deleteResult);
+
+          console.log("Delete Result:", {
+            command: deleteResult.command,
+            rowCount: deleteResult.rowCount,
+            rows: deleteResult.rows,
+            fields: deleteResult.fields
+          });
 
           if (deleteResult.rowCount === 0) {
-            console.error("Failed to delete transaction");
+            console.error("Failed to delete transaction - no rows affected");
             return NextResponse.json(
-              { error: "Failed to delete old transaction" },
+              { error: "Failed to delete old transaction - no rows affected" },
               { status: 500 }
             );
           }
+
+          console.log("Old transaction deleted successfully");
 
           // Insert new transaction for retry
           await db.insert(transactions).values({
