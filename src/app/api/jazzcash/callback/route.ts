@@ -38,7 +38,30 @@ async function handleCallback(req: Request) {
       redirectUrl.searchParams.append(key, value.toString());
     });
 
-    // Redirect to the payment-status page
+    // For POST requests, return an HTML response that automatically redirects
+    if (req.method === "POST") {
+      const html = `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta http-equiv="refresh" content="0;url=${redirectUrl.toString()}" />
+          </head>
+          <body>
+            <p>Redirecting to payment status page...</p>
+            <script>
+              window.location.href = "${redirectUrl.toString()}";
+            </script>
+          </body>
+        </html>
+      `;
+      return new NextResponse(html, {
+        headers: {
+          "Content-Type": "text/html"
+        }
+      });
+    }
+
+    // For GET requests, use the standard redirect
     return NextResponse.redirect(redirectUrl.toString());
   } catch (error) {
     console.error("Payment Callback Error:", error);
