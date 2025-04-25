@@ -1,4 +1,5 @@
-("use client"); // Ensure it's a client component
+"use client"; // Ensure it's a client component
+
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
@@ -7,10 +8,12 @@ const SuccessPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState("checking");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkPaymentStatus = async () => {
       try {
+        setLoading(true);
         // Get all search params
         const params = Object.fromEntries(searchParams.entries());
         console.log("Payment Status Params:", params);
@@ -22,6 +25,7 @@ const SuccessPage = () => {
           console.error("Transaction reference missing");
           toast.error("Transaction reference missing.");
           setStatus("error");
+          setLoading(false);
           return;
         }
 
@@ -91,23 +95,31 @@ const SuccessPage = () => {
         console.error("Payment Status Check Error:", error);
         toast.error("Error checking payment status. Please try again.");
         setStatus("error");
+      } finally {
+        setLoading(false);
       }
     };
 
     checkPaymentStatus();
   }, [searchParams, router]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+          <div className="flex flex-col items-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+            <p className="text-gray-600">Processing payment status...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
         <h1 className="text-2xl font-bold mb-4">Payment Status</h1>
-
-        {status === "checking" && (
-          <div className="flex flex-col items-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-            <p className="text-gray-600">Checking payment status...</p>
-          </div>
-        )}
 
         {status === "success" && (
           <div className="text-green-600">

@@ -1,10 +1,32 @@
 import { NextResponse } from "next/server";
 
+// Handle both GET and POST methods
 export async function GET(req: Request) {
+  return handleCallback(req);
+}
+
+export async function POST(req: Request) {
+  return handleCallback(req);
+}
+
+async function handleCallback(req: Request) {
   try {
-    // Get the URL parameters
-    const url = new URL(req.url);
-    const params = Object.fromEntries(url.searchParams.entries());
+    let params: Record<string, string> = {};
+
+    // Handle both GET and POST requests
+    if (req.method === "GET") {
+      const url = new URL(req.url);
+      params = Object.fromEntries(url.searchParams.entries());
+    } else if (req.method === "POST") {
+      const formData = await req.formData();
+      // Convert FormDataEntryValue to string
+      params = Object.fromEntries(
+        Array.from(formData.entries()).map(([key, value]) => [
+          key,
+          value.toString()
+        ])
+      );
+    }
 
     console.log("JazzCash Callback Params:", params);
 
