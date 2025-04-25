@@ -149,6 +149,7 @@ const TransactionsPage = () => {
   };
   const handleRetryPayment = async (txn: any) => {
     try {
+      setLoading(true);
       setRetryLoading((prev) => ({ ...prev, [txn.txnRefNo]: true }));
       const response = await fetch("/api/jazzcash/initiate-payment", {
         method: "POST",
@@ -186,6 +187,7 @@ const TransactionsPage = () => {
       console.error("Retry Payment Error:", error);
       toast.error("Error retrying payment.");
     } finally {
+      setLoading(false);
       setRetryLoading((prev) => ({ ...prev, [txn.txnRefNo]: false }));
     }
   };
@@ -197,6 +199,17 @@ const TransactionsPage = () => {
   }, [selectedTxn, showModal]); // ✅ Runs only when `selectedTxn` and `showModal` are set
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
+      {loading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+            <div className="flex flex-col items-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+              <p className="text-gray-600">Processing payment...</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Cards Section */}
       {(role === "admin" || role === "hr") && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
