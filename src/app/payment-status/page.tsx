@@ -70,7 +70,7 @@ const SuccessPage = () => {
               toast.success("Payment successful!");
               // Redirect to dashboard after 3 seconds
               setTimeout(() => {
-                router.push("/dashboard");
+                router.push("/transactions");
               }, 3000);
             } else if (statusData.status === "failed") {
               toast.error("Payment failed. Please try again.");
