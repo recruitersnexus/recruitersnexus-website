@@ -325,10 +325,20 @@ const TransactionsPage = () => {
                       {(txn.status === "pending" || txn.status === "failed") &&
                         role === "user" && (
                           <button
-                            className="bg-orange-500 text-white px-2 py-1 rounded"
+                            className={`bg-orange-500 text-white px-2 py-1 rounded flex items-center ${
+                              loading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                             onClick={() => handleRetryPayment(txn)}
+                            disabled={loading}
                           >
-                            Retry Payment
+                            {loading ? (
+                              <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                Processing...
+                              </>
+                            ) : (
+                              "Retry Payment"
+                            )}
                           </button>
                         )}
 
