@@ -137,7 +137,7 @@ const SuccessPage = () => {
               ></path>
             </svg>
             <p className="text-xl font-semibold">Payment Successful!</p>
-            <p className="text-sm mt-2">Redirecting to dashboard...</p>
+            <p className="text-sm mt-2">Redirecting to transaction page...</p>
           </div>
         )}
 
