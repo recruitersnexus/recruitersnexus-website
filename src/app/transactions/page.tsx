@@ -28,7 +28,10 @@ const TransactionsPage = () => {
     pending: 0,
     refunded: 0
   });
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
+  const [retryLoading, setRetryLoading] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const [showModal, setShowModal] = useState(false);
   const [selectedTxn, setSelectedTxn] = useState<{
     requestBody: any;
@@ -146,6 +149,7 @@ const TransactionsPage = () => {
   };
   const handleRetryPayment = async (txn: any) => {
     try {
+      setRetryLoading((prev) => ({ ...prev, [txn.txnRefNo]: true }));
       const response = await fetch("/api/jazzcash/initiate-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -181,6 +185,8 @@ const TransactionsPage = () => {
     } catch (error) {
       console.error("Retry Payment Error:", error);
       toast.error("Error retrying payment.");
+    } finally {
+      setRetryLoading((prev) => ({ ...prev, [txn.txnRefNo]: false }));
     }
   };
 
@@ -326,12 +332,14 @@ const TransactionsPage = () => {
                         role === "user" && (
                           <button
                             className={`bg-orange-500 text-white px-2 py-1 rounded flex items-center ${
-                              loading ? "opacity-50 cursor-not-allowed" : ""
+                              retryLoading[txn.txnRefNo]
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
                             }`}
                             onClick={() => handleRetryPayment(txn)}
-                            disabled={loading}
+                            disabled={retryLoading[txn.txnRefNo]}
                           >
-                            {loading ? (
+                            {retryLoading[txn.txnRefNo] ? (
                               <>
                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
                                 Processing...
