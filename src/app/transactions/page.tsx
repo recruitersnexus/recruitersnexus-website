@@ -11,7 +11,7 @@ import NavBar from "@/app/dashboard/components/NavBar";
 const TransactionsPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { userData } = useUserData();
+  const { userData, status: userDataStatus } = useUserData();
   const [role, setRole] = useState<string>("");
   const [transactions, setTransactions] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,14 +48,19 @@ const TransactionsPage = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (status === "unauthenticated" || userDataStatus === "error") {
       toast.error("Please login to view transactions");
       router.push("/login");
     }
-  }, [status, router]);
+  }, [status, userDataStatus, router]);
 
   useEffect(() => {
-    if (userData && role && status === "authenticated") {
+    if (
+      userData &&
+      role &&
+      status === "authenticated" &&
+      userDataStatus === "success"
+    ) {
       setLoading(true);
       const userId = userData.id;
       fetch(
@@ -91,7 +96,7 @@ const TransactionsPage = () => {
         })
         .finally(() => setLoading(false));
     }
-  }, [userData, role, currentPage, status]);
+  }, [userData, role, currentPage, status, userDataStatus]);
 
   const handleRefund = async (
     transactionId: number,
@@ -223,7 +228,13 @@ const TransactionsPage = () => {
             </div>
           )}
 
-          {status === "authenticated" && (
+          {status === "authenticated" && userDataStatus === "loading" && (
+            <div className="text-center py-8">
+              <p className="text-gray-500 text-lg">Loading user data...</p>
+            </div>
+          )}
+
+          {status === "authenticated" && userDataStatus === "success" && (
             <>
               {loading && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -238,7 +249,7 @@ const TransactionsPage = () => {
 
               {!loading && !role && (
                 <div className="text-center py-8">
-                  <p className="text-gray-500 text-lg">Loading user data...</p>
+                  <p className="text-gray-500 text-lg">Loading user role...</p>
                 </div>
               )}
 
