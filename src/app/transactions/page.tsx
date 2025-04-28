@@ -7,6 +7,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import TransactionModal from "../comps/ui/TransactionModal";
 import InquiryModal from "../comps/ui/InquiryModal";
 import Sidebar from "@/app/(overview)/SideBar";
+import NavBar from "@/app/dashboard/components/NavBar";
 
 const TransactionsPage = () => {
   const router = useRouter();
@@ -203,9 +204,24 @@ const TransactionsPage = () => {
     }
   }, [selectedTxn, showModal]); // ✅ Runs only when `selectedTxn` and `showModal` are set
   return (
-    <div className="flex min-h-screen bg-[#F5F6FA]">
-      <Sidebar slug={"transactions"} />
-      <div className="flex-1 ml-64 p-8">
+    <div className="w-full flex md:flex-row flex-col pt-12 bg-[#F2F5F9] font-nunito">
+      <div className={`${useUserData().userData ? "flex" : "hidden"}`}>
+        <NavBar />
+      </div>
+
+      <div
+        className={`w-full ${
+          useUserData().userData ? "md:flex" : "hidden"
+        } md:min-w-[250px] md:w-1/5 hidden flex-col p-6 h-full md:h-auto bg-[#F2F5F9] border-r-2 border-[#A4AC7EB] space-y-6`}
+      >
+        <Sidebar slug="transactions" />
+      </div>
+
+      <div
+        className={`w-full ${
+          useUserData().userData ? "md:w-4/5" : "w-full"
+        } h-full bg-[#F2F5F9] pb-32`}
+      >
         <div className="max-w-7xl mx-auto">
           {!userData && (
             <div className="text-center py-8">
@@ -512,6 +528,14 @@ const TransactionsPage = () => {
             </>
           )}
         </div>
+      </div>
+
+      <div
+        className={`w-full ${
+          useUserData().userData ? "md:hidden" : "hidden"
+        } fixed bottom-0 z-20 md:min-w-[250px] border-t-2 md:w-1/5 items-center justify-center flex-col py-0 h-24 md:h-auto bg-[#F2F5F9] border-r-2 border-[#A4AC7EB] space-y-6`}
+      >
+        <Sidebar slug="transactions" />
       </div>
     </div>
   );
