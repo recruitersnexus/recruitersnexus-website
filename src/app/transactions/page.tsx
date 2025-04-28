@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { useSearchParams, useRouter } from "next/navigation";
 import TransactionModal from "../comps/ui/TransactionModal";
 import InquiryModal from "../comps/ui/InquiryModal";
-import NavBar from "@/app/dashboard/components/NavBar";
+import Sidebar from "@/app/(overview)/SideBar";
 
 const TransactionsPage = () => {
   const router = useRouter();
@@ -204,9 +204,7 @@ const TransactionsPage = () => {
   }, [selectedTxn, showModal]); // ✅ Runs only when `selectedTxn` and `showModal` are set
   return (
     <div className="flex min-h-screen bg-[#F5F6FA]">
-      <div className="w-64 flex-shrink-0 fixed left-0 top-0 h-full">
-        <NavBar />
-      </div>
+      <Sidebar slug={"transactions"} />
       <div className="flex-1 ml-64 p-8">
         <div className="max-w-7xl mx-auto">
           {!userData && (
