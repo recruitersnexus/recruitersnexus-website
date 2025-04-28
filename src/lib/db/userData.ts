@@ -19,22 +19,19 @@ interface UserData {
 const useUserData = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const UUID = uuidv4();
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading"
-  );
+  const [status, setstatus] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setStatus("loading");
         const response = await axios.get(
           process.env.NEXT_PUBLIC_Backend_URL + "/api/users/me"
         );
+
         setUserData(response.data.user);
-        setStatus("success");
       } catch (error) {
         console.error("Error fetching user data:", error);
-        setStatus("error");
+        setstatus("404");
       }
     };
 
