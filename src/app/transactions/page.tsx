@@ -341,7 +341,7 @@ const TransactionsPage = () => {
                           Request Refund
                         </button>
                       )}
-                      {(txn.status === "pending" || txn.status === "failed") &&
+                      {(txn.status === "pending") &&
                         role === "user" && (
                           <button
                             className={`bg-orange-500 text-white px-2 py-1 rounded flex items-center ${

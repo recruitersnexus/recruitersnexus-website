@@ -20,6 +20,7 @@ const SuccessPage = () => {
 
         const txnRefNo = params.pp_TxnRefNo;
         const responseCode = params.pp_ResponseCode;
+        const responseMessage = params.pp_ResponseMessage;
 
         if (!txnRefNo) {
           // console.error("Transaction reference missing");
@@ -67,11 +68,11 @@ const SuccessPage = () => {
             setStatus(statusData.status);
 
             // Get JazzCash response message from the details
-            const responseBody = statusData.details.responseBody;
+            // const responseBody = statusData.details.responseBody;
             let jazzCashMessage = "";
             try {
-              const parsedResponse = JSON.parse(responseBody);
-              jazzCashMessage = parsedResponse.pp_ResponseMessage || "";
+              // const parsedResponse = JSON.parse(responseBody);
+              jazzCashMessage = responseMessage || "";
             } catch (error) {
               console.error("Error parsing response body:", error);
             }
