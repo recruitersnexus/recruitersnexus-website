@@ -10,8 +10,7 @@ import NavBar from "@/app/dashboard/components/NavBar";
 
 const TransactionsPage = () => {
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const { userData, status: userDataStatus } = useUserData();
+  const { userData } = useUserData();
   const [role, setRole] = useState<string>("");
   const [transactions, setTransactions] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,19 +47,7 @@ const TransactionsPage = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (status === "unauthenticated" || userDataStatus === "error") {
-      toast.error("Please login to view transactions");
-      router.push("/login");
-    }
-  }, [status, userDataStatus, router]);
-
-  useEffect(() => {
-    if (
-      userData &&
-      role &&
-      status === "authenticated" &&
-      userDataStatus === "success"
-    ) {
+    if (userData && role) {
       setLoading(true);
       const userId = userData.id;
       fetch(
@@ -96,7 +83,7 @@ const TransactionsPage = () => {
         })
         .finally(() => setLoading(false));
     }
-  }, [userData, role, currentPage, status, userDataStatus]);
+  }, [userData, role, currentPage]);
 
   const handleRefund = async (
     transactionId: number,
@@ -222,19 +209,13 @@ const TransactionsPage = () => {
       </div>
       <div className="flex-1 ml-64 p-8">
         <div className="max-w-7xl mx-auto">
-          {status === "loading" && (
-            <div className="text-center py-8">
-              <p className="text-gray-500 text-lg">Loading session...</p>
-            </div>
-          )}
-
-          {status === "authenticated" && userDataStatus === "loading" && (
+          {!userData && (
             <div className="text-center py-8">
               <p className="text-gray-500 text-lg">Loading user data...</p>
             </div>
           )}
 
-          {status === "authenticated" && userDataStatus === "success" && (
+          {userData && (
             <>
               {loading && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
