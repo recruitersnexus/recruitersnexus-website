@@ -33,7 +33,7 @@ export default function Pricing() {
     {
       title: "Basic",
       price: "free",
-      priceUSD: 0, 
+      priceUSD: 0,
       features: [
         "2 Mock Interviews",
         "Basic Interview Rating",
@@ -42,19 +42,20 @@ export default function Pricing() {
         "No Interview Report",
         "No One-On-One Coaching sessions",
         "No Personalized Interview Report with Improvement suggestions",
-        "No Dedicated Industry Specific Interview Pool",
+        "No Dedicated Industry Specific Interview Pool"
       ],
       buttonLabel: (
         <>
-          What are you waiting for?<br />
+          What are you waiting for?
+          <br />
           <strong>Get Started For FREE!</strong>
         </>
-      ),
+      )
     },
     {
       title: "Pro",
       price: "$1",
-      priceUSD: 1, 
+      priceUSD: 1,
       features: [
         "One Mock Interview",
         "Basic Interview Rating",
@@ -63,28 +64,28 @@ export default function Pricing() {
         "Detailed Interview Report",
         "No One-On-One Coaching sessions",
         "No Personalized Interview Report with Improvement suggestions",
-        "No Dedicated Industry Specific Interview Pool",
+        "No Dedicated Industry Specific Interview Pool"
       ],
-      buttonLabel: "Start Your Pro Membership Today!",
+      buttonLabel: "Start Your Pro Membership Today!"
     },
     {
       title: "Premium",
       price: "$5",
-      priceUSD: 5, 
+      priceUSD: 5,
       features: [
         "Pack of 3 Mock Interviews",
         "Basic Interview Rating",
         "Behavioral, Technical & Case Studies",
         "Dedicated Industry Specific Interview Pool",
         "Personalized Interview Report with Improvement suggestions",
-        "One-On-One Coaching Sessions with Experts with tips and tricks about how to secure a good job",
+        "One-On-One Coaching Sessions with Experts with tips and tricks about how to secure a good job"
       ],
-      buttonLabel: "Experience the Best - Get Premium Now!",
-    },
+      buttonLabel: "Experience the Best - Get Premium Now!"
+    }
   ];
-  
-   // Function to handle button click
-    // Handle click event
+
+  // Function to handle button click
+  // Handle click event
   const handleClick = async (plan: { title: string; priceUSD: number }) => {
     if (status === "404") {
       toast.error("No User Found! Please log in.");
@@ -92,11 +93,9 @@ export default function Pricing() {
       return;
     }
     if (userData?.role === "admin" || userData?.role === "hr") {
-      toast.error("Only regular users can make a purchase. Admins and HR are not allowed to buy this.");
-      return;
-    }
-    if (userData?.plan && userData.plan !== "free") {
-      toast.success(`User already purchased '${userData.plan}' Plan.`);
+      toast.error(
+        "Only regular users can make a purchase. Admins and HR are not allowed to buy this."
+      );
       return;
     }
     if (exchangeRate === null) {
@@ -104,19 +103,49 @@ export default function Pricing() {
       return;
     }
 
-    // Convert USD price to PKR
-    const pricePKR = plan.priceUSD * exchangeRate;
+    try {
+      // Check transaction status using the new API
+      const response = await fetch(
+        `/api/transactions/check-status?userId=${userData?.id}`
+      );
+      const data = await response.json();
 
-    toast.success(`You selected the ${plan.title} plan. Amount: PKR ${pricePKR.toFixed(2)}`);
+      if (data.success) {
+        if (data.hasTransaction) {
+          if (data.transaction.status === "pending") {
+            toast.error(data.message);
+            router.push("/transactions");
+            return;
+          }
+          if (data.transaction.status === "success") {
+            toast.success(data.message);
+            return;
+          }
+        }
+      }
 
-    // Redirect to JazzCash Payment
-    // router.push(`/payment?priceUSD=${pricePKR}&plan=${plan.title}`);
-    router.push(`/payment?plan=${plan.title}&priceUSD=${plan.priceUSD}`);
+      // Convert USD price to PKR
+      const pricePKR = plan.priceUSD * exchangeRate;
+
+      toast.success(
+        `You selected the ${plan.title} plan. Amount: PKR ${pricePKR.toFixed(
+          2
+        )}`
+      );
+
+      // Redirect to JazzCash Payment
+      router.push(`/payment?plan=${plan.title}&priceUSD=${plan.priceUSD}`);
+    } catch (error) {
+      console.error("Error checking transaction status:", error);
+      toast.error("Error checking transaction status. Please try again.");
+    }
   };
   return (
     <div className="bg-black">
-      <h2 className="text-5xl font-bold text-center mb-10 text-white">Explore Our Pricing Plans</h2>
-    
+      <h2 className="text-5xl font-bold text-center mb-10 text-white">
+        Explore Our Pricing Plans
+      </h2>
+
       <div className="flex flex-wrap justify-center gap-6">
         {plans.map((plan, index) => (
           <BackgroundGradient
@@ -124,19 +153,29 @@ export default function Pricing() {
             className="rounded-[22px] p-6 sm:p-10 bg-zinc-900 dark:bg-zinc-900 shadow-lg max-w-xs flex flex-col"
           >
             <div className="text-center mb-6">
-              <h3 className="text-xl font-semibold mb-2 text-white">{plan.title}</h3>
+              <h3 className="text-xl font-semibold mb-2 text-white">
+                {plan.title}
+              </h3>
               <p className="text-2xl font-bold text-indigo-600">{plan.price}</p>
-              <p className="text-2xl font-bold text-indigo-600">{exchangeRate
+              <p className="text-2xl font-bold text-indigo-600">
+                {exchangeRate
                   ? `PKR ${(plan.priceUSD * exchangeRate).toFixed(2)}`
-                  : "Fetching..."}</p>
+                  : "Fetching..."}
+              </p>
             </div>
             <div className="flex-grow mb-6">
-              <h4 className="text-lg font-semibold mb-4 text-center text-white">Available Features</h4>
+              <h4 className="text-lg font-semibold mb-4 text-center text-white">
+                Available Features
+              </h4>
               <ul className="text-sm space-y-2">
                 {plan.features.map((feature, i) => (
                   <li
                     key={i}
-                    className={`flex items-center space-x-2 ${feature.startsWith("No") ? "text-red-500" : "text-green-600"}`}
+                    className={`flex items-center space-x-2 ${
+                      feature.startsWith("No")
+                        ? "text-red-500"
+                        : "text-green-600"
+                    }`}
                   >
                     <span>{feature.startsWith("No") ? "✗" : "✓"}</span>
                     <span>{feature}</span>
@@ -144,9 +183,10 @@ export default function Pricing() {
                 ))}
               </ul>
             </div>
-            <button 
-            onClick={() => handleClick(plan)}
-            className="w-full rounded-full py-2 text-white bg-indigo-600 hover:bg-indigo-700">
+            <button
+              onClick={() => handleClick(plan)}
+              className="w-full rounded-full py-2 text-white bg-indigo-600 hover:bg-indigo-700"
+            >
               {plan.buttonLabel}
             </button>
           </BackgroundGradient>

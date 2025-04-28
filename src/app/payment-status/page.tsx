@@ -16,13 +16,13 @@ const SuccessPage = () => {
         setLoading(true);
         // Get all search params
         const params = Object.fromEntries(searchParams.entries());
-        console.log("Payment Status Params:", params);
+        // console.log("Payment Status Params:", params);
 
         const txnRefNo = params.pp_TxnRefNo;
         const responseCode = params.pp_ResponseCode;
 
         if (!txnRefNo) {
-          console.error("Transaction reference missing");
+          // console.error("Transaction reference missing");
           toast.error("Transaction reference missing.");
           setStatus("error");
           setLoading(false);
@@ -46,7 +46,7 @@ const SuccessPage = () => {
         }
 
         const verifyData = await verifyResponse.json();
-        console.log("Verification Response:", verifyData);
+        // console.log("Verification Response:", verifyData);
 
         if (verifyData.success) {
           // Get the updated transaction status
@@ -61,19 +61,31 @@ const SuccessPage = () => {
           }
 
           const statusData = await statusResponse.json();
-          console.log("Status Response:", statusData);
+          // console.log("Status Response:", statusData);
 
           if (statusData.success) {
             setStatus(statusData.status);
 
+            // Get JazzCash response message from the details
+            const responseBody = statusData.details.responseBody;
+            let jazzCashMessage = "";
+            try {
+              const parsedResponse = JSON.parse(responseBody);
+              jazzCashMessage = parsedResponse.pp_ResponseMessage || "";
+            } catch (error) {
+              console.error("Error parsing response body:", error);
+            }
+
             if (statusData.status === "success") {
-              toast.success("Payment successful!");
+              toast.success(jazzCashMessage || "Payment successful!");
               // Redirect to dashboard after 3 seconds
               setTimeout(() => {
                 router.push("/transactions");
               }, 3000);
             } else if (statusData.status === "failed") {
-              toast.error("Payment failed. Please try again.");
+              toast.error(
+                jazzCashMessage || "Payment failed. Please try again."
+              );
               // Redirect to transactions page after 3 seconds
               setTimeout(() => {
                 router.push("/transactions");

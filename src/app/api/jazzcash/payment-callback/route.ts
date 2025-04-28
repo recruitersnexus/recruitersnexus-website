@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const params = Object.fromEntries(formData.entries());
 
-    console.log("JazzCash Callback Params:", params);
+    // console.log("JazzCash Callback Params:", params);
 
     // Construct the URL with query parameters
     const redirectUrl = new URL("/payment-status", process.env.NEXT_PUBLIC_URL);

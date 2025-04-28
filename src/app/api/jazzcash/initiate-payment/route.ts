@@ -11,13 +11,13 @@ dotenv.config();
 export async function POST(req: Request) {
   try {
     const { amount, userId, plan, isRetry, txnRefNo } = await req.json();
-    console.log("Received request:", {
-      amount,
-      userId,
-      plan,
-      isRetry,
-      txnRefNo
-    });
+    // console.log("Received request:", {
+    //   amount,
+    //   userId,
+    //   plan,
+    //   isRetry,
+    //   txnRefNo
+    // });
 
     if (!amount || !userId || !plan) {
       return NextResponse.json(
@@ -28,13 +28,13 @@ export async function POST(req: Request) {
 
     // If this is a retry and txnRefNo is provided, check the original transaction
     if (isRetry && txnRefNo) {
-      console.log("Processing retry for transaction:", txnRefNo);
+      // console.log("Processing retry for transaction:", txnRefNo);
       const originalTransaction = await db.query.transactions.findFirst({
         where: eq(transactions.txnRefNo, txnRefNo)
       });
 
       if (!originalTransaction) {
-        console.log("Original transaction not found:", txnRefNo);
+        // console.log("Original transaction not found:", txnRefNo);
         return NextResponse.json(
           { success: false, error: "Original transaction not found" },
           { status: 404 }
@@ -43,10 +43,10 @@ export async function POST(req: Request) {
 
       // Verify the transaction belongs to the user
       if (originalTransaction.userId !== userId) {
-        console.log("Unauthorized access attempt:", {
-          userId,
-          transactionUserId: originalTransaction.userId
-        });
+        // console.log("Unauthorized access attempt:", {
+        //   userId,
+        //   transactionUserId: originalTransaction.userId
+        // });
         return NextResponse.json(
           { success: false, error: "Unauthorized access to transaction" },
           { status: 403 }
@@ -123,7 +123,7 @@ export async function POST(req: Request) {
 
     try {
       if (isRetry && txnRefNo) {
-        console.log("Processing retry for transaction:", txnRefNo);
+        // console.log("Processing retry for transaction:", txnRefNo);
 
         try {
           // First verify the transaction exists
@@ -131,31 +131,31 @@ export async function POST(req: Request) {
             where: eq(transactions.txnRefNo, txnRefNo)
           });
 
-          console.log("Existing transaction found:", existingTransaction);
+          // console.log("Existing transaction found:", existingTransaction);
 
           if (!existingTransaction) {
-            console.error("Transaction not found for deletion:", txnRefNo);
+            // console.error("Transaction not found for deletion:", txnRefNo);
             return NextResponse.json(
               { error: "Transaction not found for deletion" },
               { status: 404 }
             );
           }
 
-          // Then delete the main transaction
-          console.log(
-            "Attempting to delete transaction with txnRefNo:",
-            txnRefNo
-          );
+          // // Then delete the main transaction
+          // console.log(
+          //   "Attempting to delete transaction with txnRefNo:",
+          //   txnRefNo
+          // );
 
           const deleteQuery = db
             .delete(transactions)
             .where(eq(transactions.txnRefNo, txnRefNo))
             .toSQL();
 
-          console.log("Delete Query:", {
-            sql: deleteQuery.sql,
-            params: deleteQuery.params
-          });
+          // console.log("Delete Query:", {
+          //   sql: deleteQuery.sql,
+          //   params: deleteQuery.params
+          // });
 
           // Execute raw SQL to ensure case sensitivity is handled
           const deleteResult = await db.execute(sql`
@@ -164,22 +164,22 @@ export async function POST(req: Request) {
             RETURNING *
           `);
 
-          console.log("Delete Result:", {
-            command: deleteResult.command,
-            rowCount: deleteResult.rowCount,
-            rows: deleteResult.rows,
-            fields: deleteResult.fields
-          });
+          // console.log("Delete Result:", {
+          //   command: deleteResult.command,
+          //   rowCount: deleteResult.rowCount,
+          //   rows: deleteResult.rows,
+          //   fields: deleteResult.fields
+          // });
 
           if (deleteResult.rowCount === 0) {
-            console.error("Failed to delete transaction - no rows affected");
+            // console.error("Failed to delete transaction - no rows affected");
             return NextResponse.json(
               { error: "Failed to delete old transaction - no rows affected" },
               { status: 500 }
             );
           }
 
-          console.log("Old transaction deleted successfully");
+          // console.log("Old transaction deleted successfully");
 
           // Insert new transaction for retry
           await db.insert(transactions).values({
@@ -191,12 +191,12 @@ export async function POST(req: Request) {
             requestBody: paramsWithHash,
             responseBody: {}
           });
-          console.log("New transaction inserted successfully for retry");
+          // console.log("New transaction inserted successfully for retry");
         } catch (deleteError) {
-          console.error(
-            "Error during transaction deletion/insertion:",
-            deleteError
-          );
+          // console.error(
+          //   "Error during transaction deletion/insertion:",
+          //   deleteError
+          // );
           return NextResponse.json(
             {
               error: "Failed to process retry transaction",
@@ -206,7 +206,7 @@ export async function POST(req: Request) {
           );
         }
       } else {
-        console.log("Inserting new transaction");
+        // console.log("Inserting new transaction");
         // Insert new transaction for first attempt
         await db.insert(transactions).values({
           userId,
@@ -217,7 +217,7 @@ export async function POST(req: Request) {
           requestBody: paramsWithHash,
           responseBody: {}
         });
-        console.log("New transaction inserted successfully");
+        // console.log("New transaction inserted successfully");
       }
 
       return NextResponse.json({
@@ -226,7 +226,7 @@ export async function POST(req: Request) {
         params: paramsWithHash
       });
     } catch (dbError) {
-      console.error("Database operation failed:", dbError);
+      // console.error("Database operation failed:", dbError);
       return NextResponse.json(
         { error: "Failed to process transaction", details: dbError },
         { status: 500 }

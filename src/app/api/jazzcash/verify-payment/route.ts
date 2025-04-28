@@ -7,12 +7,12 @@ import crypto from "crypto";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log("Verifying payment request:", body);
+    // console.log("Verifying payment request:", body);
 
     const { pp_TxnRefNo, pp_ResponseCode, pp_SecureHash } = body;
 
     if (!pp_TxnRefNo) {
-      console.error("Missing transaction reference");
+      // console.error("Missing transaction reference");
       return NextResponse.json(
         { success: false, error: "Invalid transaction reference." },
         { status: 400 }
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     });
 
     if (!transaction) {
-      console.error("Transaction not found:", pp_TxnRefNo);
+      // console.error("Transaction not found:", pp_TxnRefNo);
       return NextResponse.json(
         { success: false, error: "Transaction not found." },
         { status: 404 }
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
     // Determine transaction status based on response code
     const newStatus = pp_ResponseCode === "000" ? "success" : "failed";
-    console.log("Transaction status:", newStatus);
+    // console.log("Transaction status:", newStatus);
 
     try {
       // Update transaction in DB
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         })
         .where(eq(transactions.txnRefNo, pp_TxnRefNo));
 
-      console.log("Transaction updated successfully");
+      // console.log("Transaction updated successfully");
 
       return NextResponse.json({
         success: true,
@@ -67,14 +67,14 @@ export async function POST(req: Request) {
         transactionId: transaction.id
       });
     } catch (dbError) {
-      console.error("Database update failed:", dbError);
+      // console.error("Database update failed:", dbError);
       return NextResponse.json(
         { success: false, error: "Failed to update transaction status." },
         { status: 500 }
       );
     }
   } catch (error) {
-    console.error("JazzCash Verification Error:", error);
+    // console.error("JazzCash Verification Error:", error);
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500 }

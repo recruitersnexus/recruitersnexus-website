@@ -28,7 +28,7 @@ async function handleCallback(req: Request) {
       );
     }
 
-    console.log("JazzCash Callback Params:", params);
+    // console.log("JazzCash Callback Params:", params);
 
     // Construct the URL with query parameters
     const redirectUrl = new URL("/payment-status", process.env.NEXT_PUBLIC_URL);
