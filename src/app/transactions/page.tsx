@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useSearchParams, useRouter } from "next/navigation";
 import TransactionModal from "../comps/ui/TransactionModal";
 import InquiryModal from "../comps/ui/InquiryModal";
+import NavBar from "../dashboard/components/NavBar";
 
 const TransactionsPage = () => {
   const router = useRouter();
@@ -198,251 +199,260 @@ const TransactionsPage = () => {
     }
   }, [selectedTxn, showModal]); // ✅ Runs only when `selectedTxn` and `showModal` are set
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      {loading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-            <div className="flex flex-col items-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
-              <p className="text-gray-600">Processing payment...</p>
+    <div className="flex">
+      <NavBar />
+      <div className="flex-1">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {loading && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
+                <div className="flex flex-col items-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                  <p className="text-gray-600">Processing payment...</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          )}
 
-      {/* Cards Section */}
-      {(role === "admin" || role === "hr") && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          {loading
-            ? Array(4)
-                .fill(0)
-                .map((_, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-300 animate-pulse p-6 rounded-lg shadow-md h-24"
-                  ></div>
-                ))
-            : ["success", "failed", "pending", "refunded"].map(
-                (status, index) => (
-                  <div
-                    key={index}
-                    className={`${
-                      status === "success"
-                        ? "bg-green-500"
-                        : status === "failed"
-                        ? "bg-red-500"
-                        : status === "pending"
-                        ? "bg-yellow-500"
-                        : "bg-blue-500"
-                    } text-white p-6 rounded-lg shadow-md flex flex-col items-center 
-                transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg`}
-                  >
-                    <h2 className="text-xl font-semibold capitalize">
-                      {status}
-                    </h2>
-                    <p className="text-2xl font-bold mt-2">
-                      {statusCounts[status] || 0}
-                    </p>
-                    <p className="text-lg mt-1">
-                      Rs {totalAmounts[status] || 0}
-                    </p>
-                  </div>
-                )
-              )}
-        </div>
-      )}
-
-      {/* Transactions Table */}
-      <div className="overflow-x-auto bg-white shadow-md rounded-lg flex flex-col justify-start items-center bg-gray-100 px-4 p-5">
-        <table className="min-w-full border border-gray-200">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="px-4 py-3 border">Txn ID</th>
-              <th className="px-4 py-3 border">Amount</th>
-              <th className="px-4 py-3 border">Status</th>
-              <th className="px-4 py-2 border">Date</th>
-              <th className="px-4 py-3 border">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading
-              ? Array(10)
-                  .fill(0)
-                  .map((_, index) => (
-                    <tr key={index} className="border-b text-center">
-                      {Array(5)
-                        .fill(0)
-                        .map((_, i) => (
-                          <td key={i} className="px-4 py-3 border">
-                            <div className="bg-gray-300 animate-pulse h-5 rounded-md"></div>
-                          </td>
-                        ))}
-                    </tr>
-                  ))
-              : transactions.map((txn) => (
-                  <tr key={txn.id} className="border-b text-center">
-                    <td className="px-4 py-3 border">{txn.txnRefNo}</td>
-                    <td className="px-4 py-3 border">Rs/-{txn.amount}</td>
-                    <td className="px-4 py-3 border">
-                      <span
-                        className={`px-2 py-1 rounded-md text-xs font-medium text-white inline-block
-                  ${
-                    txn.status === "success"
-                      ? "bg-green-500"
-                      : txn.status === "failed"
-                      ? "bg-red-500"
-                      : txn.status === "pending"
-                      ? "bg-yellow-500"
-                      : txn.status === "refunded"
-                      ? "bg-blue-500"
-                      : "bg-gray-500"
-                  }`}
+          {/* Cards Section */}
+          {(role === "admin" || role === "hr") && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+              {loading
+                ? Array(4)
+                    .fill(0)
+                    .map((_, index) => (
+                      <div
+                        key={index}
+                        className="bg-gray-300 animate-pulse p-6 rounded-lg shadow-md h-24"
+                      ></div>
+                    ))
+                : ["success", "failed", "pending", "refunded"].map(
+                    (status, index) => (
+                      <div
+                        key={index}
+                        className={`${
+                          status === "success"
+                            ? "bg-green-500"
+                            : status === "failed"
+                            ? "bg-red-500"
+                            : status === "pending"
+                            ? "bg-yellow-500"
+                            : "bg-blue-500"
+                        } text-white p-6 rounded-lg shadow-md flex flex-col items-center 
+                    transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg`}
                       >
-                        {txn.status
-                          .replace(/_/g, " ")
-                          .replace(/\b\w/g, (char: string) =>
-                            char.toUpperCase()
-                          )}
-                      </span>
-                    </td>
-                    <td className="px-4 py-2 border">
-                      {new Date(txn.createdAt).toLocaleString("en-US", {
-                        month: "short",
-                        day: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        second: "2-digit",
-                        hour12: true
-                      })}
-                    </td>
-                    <td className="px-4 py-3 flex justify-center space-x-2">
-                      {role === "admin" && (
-                        <>
-                          <button
-                            className="bg-blue-500 text-white px-2 py-1 rounded"
-                            onClick={() => handleViewTransaction(txn.txnRefNo)}
+                        <h2 className="text-xl font-semibold capitalize">
+                          {status}
+                        </h2>
+                        <p className="text-2xl font-bold mt-2">
+                          {statusCounts[status] || 0}
+                        </p>
+                        <p className="text-lg mt-1">
+                          Rs {totalAmounts[status] || 0}
+                        </p>
+                      </div>
+                    )
+                  )}
+            </div>
+          )}
+
+          {/* Transactions Table */}
+          <div className="overflow-x-auto bg-white shadow-md rounded-lg flex flex-col justify-start items-center bg-gray-100 px-4 p-5">
+            <table className="min-w-full border border-gray-200">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="px-4 py-3 border">Txn ID</th>
+                  <th className="px-4 py-3 border">Amount</th>
+                  <th className="px-4 py-3 border">Status</th>
+                  <th className="px-4 py-2 border">Date</th>
+                  <th className="px-4 py-3 border">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading
+                  ? Array(10)
+                      .fill(0)
+                      .map((_, index) => (
+                        <tr key={index} className="border-b text-center">
+                          {Array(5)
+                            .fill(0)
+                            .map((_, i) => (
+                              <td key={i} className="px-4 py-3 border">
+                                <div className="bg-gray-300 animate-pulse h-5 rounded-md"></div>
+                              </td>
+                            ))}
+                        </tr>
+                      ))
+                  : transactions.map((txn) => (
+                      <tr key={txn.id} className="border-b text-center">
+                        <td className="px-4 py-3 border">{txn.txnRefNo}</td>
+                        <td className="px-4 py-3 border">Rs/-{txn.amount}</td>
+                        <td className="px-4 py-3 border">
+                          <span
+                            className={`px-2 py-1 rounded-md text-xs font-medium text-white inline-block
+                      ${
+                        txn.status === "success"
+                          ? "bg-green-500"
+                          : txn.status === "failed"
+                          ? "bg-red-500"
+                          : txn.status === "pending"
+                          ? "bg-yellow-500"
+                          : txn.status === "refunded"
+                          ? "bg-blue-500"
+                          : "bg-gray-500"
+                      }`}
                           >
-                            View
-                          </button>
-                          <button
-                            className="bg-purple-500 text-white px-2 py-1 rounded ml-2"
-                            onClick={() => handleInquire(txn.txnRefNo)}
-                          >
-                            Inquire
-                          </button>
-                        </>
-                      )}
-                      {role === "user" && txn.status === "success" && (
-                        <button
-                          className="bg-blue-500 text-white px-2 py-1 rounded"
-                          onClick={() => handleRefund(txn.id)}
-                        >
-                          Request Refund
-                        </button>
-                      )}
-                      {txn.status === "pending" && role === "user" && (
-                        <button
-                          className={`bg-orange-500 text-white px-2 py-1 rounded flex items-center ${
-                            retryLoading[txn.txnRefNo]
-                              ? "opacity-50 cursor-not-allowed"
-                              : ""
-                          }`}
-                          onClick={() => handleRetryPayment(txn)}
-                          disabled={retryLoading[txn.txnRefNo]}
-                        >
-                          {retryLoading[txn.txnRefNo] ? (
+                            {txn.status
+                              .replace(/_/g, " ")
+                              .replace(/\b\w/g, (char: string) =>
+                                char.toUpperCase()
+                              )}
+                          </span>
+                        </td>
+                        <td className="px-4 py-2 border">
+                          {new Date(txn.createdAt).toLocaleString("en-US", {
+                            month: "short",
+                            day: "2-digit",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                            hour12: true
+                          })}
+                        </td>
+                        <td className="px-4 py-3 flex justify-center space-x-2">
+                          {role === "admin" && (
                             <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                              Processing...
+                              <button
+                                className="bg-blue-500 text-white px-2 py-1 rounded"
+                                onClick={() =>
+                                  handleViewTransaction(txn.txnRefNo)
+                                }
+                              >
+                                View
+                              </button>
+                              <button
+                                className="bg-purple-500 text-white px-2 py-1 rounded ml-2"
+                                onClick={() => handleInquire(txn.txnRefNo)}
+                              >
+                                Inquire
+                              </button>
                             </>
-                          ) : (
-                            "Retry Payment"
                           )}
-                        </button>
-                      )}
-
-                      {role === "admin" &&
-                        txn.status === "refund_requested" && (
-                          <>
+                          {role === "user" && txn.status === "success" && (
                             <button
-                              className="bg-green-500 text-white px-2 py-1 rounded"
-                              onClick={() => handleRefund(txn.id, "approve")}
+                              className="bg-blue-500 text-white px-2 py-1 rounded"
+                              onClick={() => handleRefund(txn.id)}
                             >
-                              Approve
+                              Request Refund
                             </button>
+                          )}
+                          {txn.status === "pending" && role === "user" && (
                             <button
-                              className="bg-red-500 text-white px-2 py-1 rounded"
-                              onClick={() => handleRefund(txn.id, "reject")}
+                              className={`bg-orange-500 text-white px-2 py-1 rounded flex items-center ${
+                                retryLoading[txn.txnRefNo]
+                                  ? "opacity-50 cursor-not-allowed"
+                                  : ""
+                              }`}
+                              onClick={() => handleRetryPayment(txn)}
+                              disabled={retryLoading[txn.txnRefNo]}
                             >
-                              Reject
+                              {retryLoading[txn.txnRefNo] ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                                  Processing...
+                                </>
+                              ) : (
+                                "Retry Payment"
+                              )}
                             </button>
-                          </>
-                        )}
-                    </td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
-      </div>
+                          )}
 
-      {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="flex justify-center mt-6 space-x-2">
-          <button
-            className={`px-4 py-2 text-sm rounded-md ${
-              currentPage === 1
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-indigo-600 text-white hover:bg-indigo-700"
-            }`}
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
+                          {role === "admin" &&
+                            txn.status === "refund_requested" && (
+                              <>
+                                <button
+                                  className="bg-green-500 text-white px-2 py-1 rounded"
+                                  onClick={() =>
+                                    handleRefund(txn.id, "approve")
+                                  }
+                                >
+                                  Approve
+                                </button>
+                                <button
+                                  className="bg-red-500 text-white px-2 py-1 rounded"
+                                  onClick={() => handleRefund(txn.id, "reject")}
+                                >
+                                  Reject
+                                </button>
+                              </>
+                            )}
+                        </td>
+                      </tr>
+                    ))}
+              </tbody>
+            </table>
+          </div>
 
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              className={`px-4 py-2 text-sm rounded-md ${
-                currentPage === i + 1
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-200 hover:bg-gray-300"
-              }`}
-              onClick={() => setCurrentPage(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-6 space-x-2">
+              <button
+                className={`px-4 py-2 text-sm rounded-md ${
+                  currentPage === 1
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                }`}
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
 
-          <button
-            className={`px-4 py-2 text-sm rounded-md ${
-              currentPage === totalPages
-                ? "bg-gray-300 cursor-not-allowed"
-                : "bg-indigo-600 text-white hover:bg-indigo-700"
-            }`}
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  className={`px-4 py-2 text-sm rounded-md ${
+                    currentPage === i + 1
+                      ? "bg-indigo-600 text-white"
+                      : "bg-gray-200 hover:bg-gray-300"
+                  }`}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              <button
+                className={`px-4 py-2 text-sm rounded-md ${
+                  currentPage === totalPages
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                }`}
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
+          {showModal && selectedTxn && (
+            <TransactionModal
+              requestBody={selectedTxn.requestBody}
+              responseBody={selectedTxn.responseBody}
+              onClose={() => setShowModal(false)}
+            />
+          )}
+          {showInquiryModal && (
+            <InquiryModal
+              inquiryData={selectedInquiry}
+              onClose={() => setShowInquiryModal(false)}
+            />
+          )}
         </div>
-      )}
-      {showModal && selectedTxn && (
-        <TransactionModal
-          requestBody={selectedTxn.requestBody}
-          responseBody={selectedTxn.responseBody}
-          onClose={() => setShowModal(false)}
-        />
-      )}
-      {showInquiryModal && (
-        <InquiryModal
-          inquiryData={selectedInquiry}
-          onClose={() => setShowInquiryModal(false)}
-        />
-      )}
+      </div>
     </div>
   );
 };
