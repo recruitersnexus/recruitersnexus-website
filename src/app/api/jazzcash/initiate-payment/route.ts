@@ -103,7 +103,7 @@ export async function POST(req: Request) {
       ppmpf_4: "",
       ppmpf_5: ""
     };
-
+    console.log("Without Sorted String for Hashing: ", params);
     // ✅ Sort parameters alphabetically by key (ASCII order)
     const sortedKeys = Object.keys(params).sort();
 
@@ -112,7 +112,7 @@ export async function POST(req: Request) {
       integritySalt +
       "&" +
       sortedKeys.map((key) => `${key}=${params[key]}`).join("&");
-
+      console.log("Sorted String for Hashing: ", sortedString);
       // console.log("integritySalt: ", integritySalt);
     // ✅ Generate Secure Hash (HMAC-SHA256)
     const secureHash = crypto
@@ -120,7 +120,7 @@ export async function POST(req: Request) {
       .update(sortedString, "utf8")
       .digest("hex")
       .toUpperCase();
-    // console.log("Secure Hash: ", secureHash);
+    console.log("Secure Hash: ", secureHash);
     // Add pp_SecureHash to request body
     const paramsWithHash = { ...params, pp_SecureHash: secureHash };
 
