@@ -152,22 +152,30 @@ async function initiateJazzCashRefund(pp_TxnRefNo: string, amount: number) {
 }
 
 // ✅ Secure Hash Calculation for Refund API
+// ✅ Secure Hash Calculation
 function calculateSecureHash(params: Record<string, string>): string {
   const integritySalt = process.env.JAZZCASH_INTEGRITY_SALT!;
+  if (!integritySalt) {
+    throw new Error("Integrity salt is missing");
+  }
 
-  // 1️⃣ Extract "pp_" fields (except pp_SecureHash)
+  // 1️⃣ Extract "pp_" fields (except pp_SecureHash), discard empty values
   const filteredKeys = Object.keys(params)
-    .filter((key) => key.startsWith("pp_") && key !== "pp_SecureHash")
+    .filter(
+      (key) =>
+        key.startsWith("pp_") &&
+        key !== "pp_SecureHash" &&
+        params[key].trim() !== ""
+    )
     .sort(); // 2️⃣ Sort alphabetically
 
-  // 3️⃣ Concatenate values with '&'
-  const hashString =
-    integritySalt + "&" + filteredKeys.map((key) => params[key]).join("&");
+  // 3️⃣ Concatenate non-empty values with '&'
+  const hashString = integritySalt + "&" + filteredKeys.map((key) => params[key]).join("&");
 
   // 4️⃣ Generate HMAC-SHA256 hash
   return crypto
     .createHmac("sha256", integritySalt)
-    .update(hashString)
+    .update(hashString, "utf8")
     .digest("hex")
     .toUpperCase();
 }

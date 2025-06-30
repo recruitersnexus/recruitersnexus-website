@@ -103,7 +103,7 @@ export async function POST(req: Request) {
       ppmpf_4: "",
       ppmpf_5: ""
     };
-    console.log("Without Sorted String for Hashing: ", params);
+    // console.log("Without Sorted String for Hashing: ", params);
     // ✅ Sort parameters alphabetically by key (ASCII order)
     const sortedKeys = Object.keys(params).sort();
 
@@ -115,7 +115,7 @@ const nonEmptyValues = sortedKeys
 // Construct Secure Hash String: Shared Secret + non-empty param values
 const sortedString = integritySalt + "&" + nonEmptyValues.join("&");
 
-console.log("Concatenated String for SecureHash: ", sortedString);
+// console.log("Concatenated String for SecureHash: ", sortedString);
 
 const secureHash = crypto
   .createHmac("sha256", integritySalt)
