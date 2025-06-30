@@ -107,20 +107,23 @@ export async function POST(req: Request) {
     // ✅ Sort parameters alphabetically by key (ASCII order)
     const sortedKeys = Object.keys(params).sort();
 
-    // ✅ Construct Secure Hash String: Shared Secret + sorted params (key=value format)
-    const sortedString =
-      integritySalt +
-      "&" +
-      sortedKeys.map((key) => `${key}=${params[key]}`).join("&");
-      console.log("Sorted String for Hashing: ", sortedString);
-      // console.log("integritySalt: ", integritySalt);
-    // ✅ Generate Secure Hash (HMAC-SHA256)
-    const secureHash = crypto
-      .createHmac("sha256", integritySalt)
-      .update(sortedString, "utf8")
-      .digest("hex")
-      .toUpperCase();
-    console.log("Secure Hash: ", secureHash);
+// Filter out keys with empty string values and only keep the values
+const nonEmptyValues = sortedKeys
+  .filter((key) => params[key].trim() !== "") // discard empty strings
+  .map((key) => params[key]);
+
+// Construct Secure Hash String: Shared Secret + non-empty param values
+const sortedString = integritySalt + "&" + nonEmptyValues.join("&");
+
+console.log("Concatenated String for SecureHash: ", sortedString);
+
+const secureHash = crypto
+  .createHmac("sha256", integritySalt)
+  .update(sortedString, "utf8")
+  .digest("hex")
+  .toUpperCase();
+
+console.log("Secure Hash: ", secureHash);
     // Add pp_SecureHash to request body
     const paramsWithHash = { ...params, pp_SecureHash: secureHash };
 
