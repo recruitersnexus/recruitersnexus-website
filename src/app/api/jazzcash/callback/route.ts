@@ -28,41 +28,40 @@ async function handleCallback(req: Request) {
       );
     }
 
-    // console.log("JazzCash Callback Params:", params);
+    // Prepare HTML form for POST redirect
+    const formFields = Object.entries(params)
+      .map(
+        ([key, value]) =>
+          `<input type="hidden" name="${key}" value="${String(value).replace(/"/g, "&quot;")}" />`
+      )
+      .join("\n");
 
-    // Construct the URL with query parameters
-    const redirectUrl = new URL("/payment-status", process.env.NEXT_PUBLIC_URL);
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Redirecting...</title>
+        </head>
+        <body>
+          <form id="redirectForm" action="/payment-status" method="POST">
+            ${formFields}
+          </form>
+          <script>
+            document.getElementById('redirectForm').submit();
+          </script>
+          <noscript>
+            <p>JavaScript is required for automatic redirection. Please click the button below:</p>
+            <button type="submit" form="redirectForm">Continue</button>
+          </noscript>
+        </body>
+      </html>
+    `;
 
-    // Add all parameters to the URL
-    Object.entries(params).forEach(([key, value]) => {
-      redirectUrl.searchParams.append(key, value.toString());
+    return new NextResponse(html, {
+      headers: {
+        "Content-Type": "text/html"
+      }
     });
-
-    // For POST requests, return an HTML response that automatically redirects
-    if (req.method === "POST") {
-      const html = `
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta http-equiv="refresh" content="0;url=${redirectUrl.toString()}" />
-          </head>
-          <body>
-            <p>Redirecting to payment status page...</p>
-            <script>
-              window.location.href = "${redirectUrl.toString()}";
-            </script>
-          </body>
-        </html>
-      `;
-      return new NextResponse(html, {
-        headers: {
-          "Content-Type": "text/html"
-        }
-      });
-    }
-
-    // For GET requests, use the standard redirect
-    return NextResponse.redirect(redirectUrl.toString());
   } catch (error) {
     console.error("Payment Callback Error:", error);
     return NextResponse.json(
