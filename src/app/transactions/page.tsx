@@ -102,7 +102,7 @@ const TransactionsPage = () => {
       location.reload();
     } else {
       toast.error(data.error);
-      console.log("Refund api response :", data);
+      // console.log("Refund api response :", data);
     }
   };
 
@@ -116,7 +116,7 @@ const TransactionsPage = () => {
       const data = await response.json();
 
       if (data.success) {
-        console.log("Fetched Transaction Details:", data.details); // Debugging
+        // console.log("Fetched Transaction Details:", data.details); // Debugging
 
         setSelectedTxn({
           requestBody: data.details.requestBody,
@@ -132,7 +132,7 @@ const TransactionsPage = () => {
       toast.error("Error fetching transaction.");
     }
   };
-  const handleInquire = async (txnRefNo: string) => {
+  const handleInquire = async (txnRefNo: any) => {
     try {
       const response = await fetch("/api/jazzcash/inquire", {
         method: "POST",
@@ -200,7 +200,7 @@ const TransactionsPage = () => {
 
   useEffect(() => {
     if (selectedTxn && showModal) {
-      console.log("Modal should open with:", selectedTxn.requestBody);
+      // console.log("Modal should open with:", selectedTxn.requestBody);
     }
   }, [selectedTxn, showModal]); // ✅ Runs only when `selectedTxn` and `showModal` are set
   return (
