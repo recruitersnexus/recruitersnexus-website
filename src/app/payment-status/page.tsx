@@ -4,6 +4,19 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
+const SECRET_KEY = "mySecretKey123"; // Same secret as route
+function decryptParams(encrypted: string): Record<string, string> | null {
+  try {
+    const decoded = Buffer.from(decodeURIComponent(encrypted), "base64").toString("utf-8");
+    const original = decoded.replace(SECRET_KEY, "");
+    return JSON.parse(Buffer.from(original, "base64").toString("utf-8"));
+  } catch (e) {
+    console.error("Failed to decrypt params:", e);
+    return null;
+  }
+}
+
+
 const SuccessPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -15,9 +28,25 @@ const SuccessPage = () => {
       try {
         setLoading(true);
         // Get all search params
-        const params = Object.fromEntries(searchParams.entries());
-        console.log("Payment Status Params:", params);
+        // const params = Object.fromEntries(searchParams.entries());
+        // console.log("Payment Status Params:", params);
+const encryptedData = searchParams.get("data");
 
+        if (!encryptedData) {
+          toast.error("Missing payment data.");
+          setStatus("error");
+          setLoading(false);
+          return;
+        }
+
+        const params = decryptParams(encryptedData);
+        console.log("Decrypted Payment Params:", params);
+         if (!params || !params.pp_TxnRefNo) {
+          toast.error("Invalid transaction data.");
+          setStatus("error");
+          setLoading(false);
+          return;
+        }
         const txnRefNo = params.pp_TxnRefNo;
         const responseCode = params.pp_ResponseCode;
         const responseMessage = params.pp_ResponseMessage;

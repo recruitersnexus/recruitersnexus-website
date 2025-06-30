@@ -1,15 +1,20 @@
 import { NextResponse } from "next/server";
 
-// Handle both GET and POST methods
+const SECRET_KEY = "mySecretKey123"; // Replace with your own
+
+function encryptParams(params: Record<string, string>): string {
+  const json = JSON.stringify(params);
+  const base64 = Buffer.from(json).toString("base64");
+  const obfuscated = Buffer.from(base64 + SECRET_KEY).toString("base64");
+  return encodeURIComponent(obfuscated);
+}
+
+// Handle both GET and POST
 export async function GET(req: Request) {
-  console.log("🔵 Received GET request at /payment-status-callback");
-  debugger;
   return handleCallback(req);
 }
 
 export async function POST(req: Request) {
-  console.log("🟢 Received POST request at /payment-status-callback");
-  debugger;
   return handleCallback(req);
 }
 
@@ -18,36 +23,16 @@ async function handleCallback(req: Request) {
     let params: Record<string, string> = {};
 
     if (req.method === "GET") {
-      console.log("🔵 Handling GET request");
       const url = new URL(req.url);
       params = Object.fromEntries(url.searchParams.entries());
-      console.log("🔵 Extracted GET params:", params);
-      debugger;
     } else if (req.method === "POST") {
-      console.log("🟢 Handling POST request");
       const formData = await req.formData();
       params = Object.fromEntries(
-        Array.from(formData.entries()).map(([key, value]) => [
-          key,
-          value.toString(),
-        ])
+        Array.from(formData.entries()).map(([key, value]) => [key, value.toString()])
       );
-      console.log("🟢 Extracted POST params:", params);
-      debugger;
-    } else {
-      console.warn(`⚠️ Unexpected method received: ${req.method}`);
     }
 
-    // Prepare HTML form for POST redirect
-    const formFields = Object.entries(params)
-      .map(
-        ([key, value]) =>
-          `<input type="hidden" name="${key}" value="${String(value).replace(/"/g, "&quot;")}" />`
-      )
-      .join("\n");
-
-    console.log("⚪ Preparing redirect form with fields:", params);
-    debugger;
+    const encryptedParams = encryptParams(params);
 
     const html = `
       <!DOCTYPE html>
@@ -56,8 +41,8 @@ async function handleCallback(req: Request) {
           <title>Redirecting...</title>
         </head>
         <body>
-          <form id="redirectForm" action="/payment-status" method="POST">
-            ${formFields}
+          <form id="redirectForm" action="/payment-status" method="GET">
+            <input type="hidden" name="data" value="${encryptedParams}" />
           </form>
           <script>
             document.getElementById('redirectForm').submit();
@@ -77,9 +62,6 @@ async function handleCallback(req: Request) {
     });
   } catch (error) {
     console.error("⛔ Payment Callback Error:", error);
-    return NextResponse.json(
-      { error: "Failed to process payment callback" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to process payment callback" }, { status: 500 });
   }
 }
