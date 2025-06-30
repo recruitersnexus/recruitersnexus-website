@@ -90,6 +90,7 @@ export async function POST(req: Request) {
       pp_BillReference: `purchase${plan}`,
       pp_Description: "Before underscore is User ID then at last is Plan name.",
       pp_BankID: "",
+      pp_ProductID: "",
       pp_TxnExpiryDateTime: new Date(Date.now() + 24 * 60 * 60 * 1000)
         .toISOString()
         .replace(/\D/g, "")
