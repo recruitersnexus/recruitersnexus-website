@@ -43,7 +43,7 @@ async function handleCallback(req: Request) {
           <title>Redirecting...</title>
         </head>
         <body>
-          <form id="redirectForm" action="/payment-status" method="POST">
+          <form id="redirectForm" action="/payment-status" method="GET">
             ${formFields}
           </form>
           <script>
