@@ -77,29 +77,29 @@ export async function POST(req: Request) {
     const formattedAmount = (amount * 100).toFixed(0); // Convert to paisa
 
     const params: Record<string, string> = {
-      pp_Amount: formattedAmount,
-      pp_BankID: "",
-      pp_BillReference: `purchase${plan}`,
-      pp_Description: "Before underscore is User ID then at last is Plan name.",
+      pp_Version: "1.1",
+      pp_TxnType: "MPAY",
       pp_Language: "EN",
       pp_MerchantID: process.env.JAZZCASH_MERCHANT_ID!,
-      pp_Password: process.env.JAZZCASH_PASSWORD!,
-      pp_ReturnURL: `${process.env.NEXT_PUBLIC_URL}/api/jazzcash/callback`,
       pp_SubMerchantID: "",
+      pp_Password: process.env.JAZZCASH_PASSWORD!,
+      pp_TxnRefNo: newTxnRefNo,
+      pp_Amount: formattedAmount,
       pp_TxnCurrency: "PKR",
       pp_TxnDateTime: new Date().toISOString().replace(/\D/g, "").slice(0, 14),
+      pp_BillReference: `purchase${plan}`,
+      pp_Description: "Before underscore is User ID then at last is Plan name.",
+      pp_BankID: "",
       pp_TxnExpiryDateTime: new Date(Date.now() + 24 * 60 * 60 * 1000)
         .toISOString()
         .replace(/\D/g, "")
         .slice(0, 14),
-      pp_TxnRefNo: newTxnRefNo,
-      pp_TxnType: "",
-      pp_Version: "1.1",
-      ppmpf_1: "1",
-      ppmpf_2: "2",
-      ppmpf_3: "3",
-      ppmpf_4: "4",
-      ppmpf_5: "5"
+      pp_ReturnURL: `${process.env.NEXT_PUBLIC_URL}/api/jazzcash/callback`,
+      ppmpf_1: "",
+      ppmpf_2: "",
+      ppmpf_3: "",
+      ppmpf_4: "",
+      ppmpf_5: ""
     };
 
     // ✅ Sort parameters alphabetically by key (ASCII order)
