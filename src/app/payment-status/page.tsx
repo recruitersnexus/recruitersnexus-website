@@ -16,7 +16,7 @@ const SuccessPage = () => {
         setLoading(true);
         // Get all search params
         const params = Object.fromEntries(searchParams.entries());
-        // console.log("Payment Status Params:", params);
+        console.log("Payment Status Params:", params);
 
         const txnRefNo = params.pp_TxnRefNo;
         const responseCode = params.pp_ResponseCode;
