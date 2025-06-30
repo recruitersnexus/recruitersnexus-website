@@ -88,7 +88,8 @@ export async function POST(req: Request) {
       pp_TxnCurrency: "PKR",
       pp_TxnDateTime: new Date().toISOString().replace(/\D/g, "").slice(0, 14),
       pp_BillReference: `purchase${plan}`,
-      pp_Description: "Before underscore is User ID then at last is Plan name.",
+      // pp_Description: "Before underscore is User ID then at last is Plan name.",
+      pp_Description: "Product test description",
       pp_BankID: "",
       pp_ProductID: "",
       pp_TxnExpiryDateTime: new Date(Date.now() + 24 * 60 * 60 * 1000)
@@ -112,14 +113,14 @@ export async function POST(req: Request) {
       "&" +
       sortedKeys.map((key) => `${key}=${params[key]}`).join("&");
 
-      console.log("integritySalt: ", integritySalt);
+      // console.log("integritySalt: ", integritySalt);
     // ✅ Generate Secure Hash (HMAC-SHA256)
     const secureHash = crypto
       .createHmac("sha256", integritySalt)
       .update(sortedString, "utf8")
       .digest("hex")
       .toUpperCase();
-    console.log("Secure Hash: ", secureHash);
+    // console.log("Secure Hash: ", secureHash);
     // Add pp_SecureHash to request body
     const paramsWithHash = { ...params, pp_SecureHash: secureHash };
 
