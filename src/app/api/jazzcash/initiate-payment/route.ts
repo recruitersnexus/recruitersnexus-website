@@ -93,7 +93,7 @@ export async function POST(req: Request) {
         .replace(/\D/g, "")
         .slice(0, 14),
       pp_TxnRefNo: newTxnRefNo,
-      pp_TxnType: "MIGS",
+      pp_TxnType: "",
       pp_Version: "1.1",
       ppmpf_1: "1",
       ppmpf_2: "2",
@@ -111,13 +111,14 @@ export async function POST(req: Request) {
       "&" +
       sortedKeys.map((key) => `${key}=${params[key]}`).join("&");
 
+      console.log("integritySalt: ", integritySalt);
     // ✅ Generate Secure Hash (HMAC-SHA256)
     const secureHash = crypto
       .createHmac("sha256", integritySalt)
       .update(sortedString, "utf8")
       .digest("hex")
       .toUpperCase();
-
+    console.log("Secure Hash: ", secureHash);
     // Add pp_SecureHash to request body
     const paramsWithHash = { ...params, pp_SecureHash: secureHash };
 
