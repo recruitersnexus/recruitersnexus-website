@@ -123,7 +123,10 @@ export default function Pricing() {
           }
         }
       }
-
+    if (plan.priceUSD === 0) {
+      toast.success("You are already on the Basic plan.");
+      return;
+    }
       // Convert USD price to PKR
       const pricePKR = plan.priceUSD * exchangeRate;
 
