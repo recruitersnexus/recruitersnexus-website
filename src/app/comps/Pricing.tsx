@@ -70,8 +70,8 @@ export default function Pricing() {
     // },
     {
       title: "$5",
-      price: "$2",
-      priceUSD: 1,
+      price: "Limited Time Offer: $2 Only",
+      priceUSD: 2,
       features: [
         "One Mock Interview",
         "Basic Interview Rating",
