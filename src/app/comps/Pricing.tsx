@@ -69,7 +69,7 @@ export default function Pricing() {
     //   buttonLabel: "Start Your Pro Membership Today!"
     // },
     {
-      title: "$5",
+      title: "Pro",
       price: "Limited Time Offer: $2 Only",
       priceUSD: 2,
       features: [
