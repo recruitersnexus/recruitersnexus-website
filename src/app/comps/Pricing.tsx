@@ -30,58 +30,73 @@ export default function Pricing() {
     fetchExchangeRate();
   }, []);
   const plans = [
+    // {
+    //   title: "Basic",
+    //   price: "free",
+    //   priceUSD: 0,
+    //   features: [
+    //     "2 Mock Interviews",
+    //     "Basic Interview Rating",
+    //     "Behavioral Interview",
+    //     "Random Interviewer Pool",
+    //     "No Interview Report",
+    //     "No One-On-One Coaching sessions",
+    //     "No Personalized Interview Report with Improvement suggestions",
+    //     "No Dedicated Industry Specific Interview Pool"
+    //   ],
+    //   buttonLabel: (
+    //     <>
+    //       What are you waiting for?
+    //       <br />
+    //       <strong>Get Started For FREE!</strong>
+    //     </>
+    //   )
+    // },
+    // {
+    //   title: "Pro",
+    //   price: "$1",
+    //   priceUSD: 1,
+    //   features: [
+    //     "One Mock Interview",
+    //     "Basic Interview Rating",
+    //     "Behavioral & Technical Interview",
+    //     "Access to wider Interviewer Pool",
+    //     "Detailed Interview Report",
+    //     "No One-On-One Coaching sessions",
+    //     "No Personalized Interview Report with Improvement suggestions",
+    //     "No Dedicated Industry Specific Interview Pool"
+    //   ],
+    //   buttonLabel: "Start Your Pro Membership Today!"
+    // },
     {
-      title: "Basic",
-      price: "free",
-      priceUSD: 0,
-      features: [
-        "2 Mock Interviews",
-        "Basic Interview Rating",
-        "Behavioral Interview",
-        "Random Interviewer Pool",
-        "No Interview Report",
-        "No One-On-One Coaching sessions",
-        "No Personalized Interview Report with Improvement suggestions",
-        "No Dedicated Industry Specific Interview Pool"
-      ],
-      buttonLabel: (
-        <>
-          What are you waiting for?
-          <br />
-          <strong>Get Started For FREE!</strong>
-        </>
-      )
-    },
-    {
-      title: "Pro",
-      price: "$1",
+      title: "$5",
+      price: "$2",
       priceUSD: 1,
       features: [
         "One Mock Interview",
         "Basic Interview Rating",
         "Behavioral & Technical Interview",
-        "Access to wider Interviewer Pool",
         "Detailed Interview Report",
-        "No One-On-One Coaching sessions",
-        "No Personalized Interview Report with Improvement suggestions",
-        "No Dedicated Industry Specific Interview Pool"
-      ],
-      buttonLabel: "Start Your Pro Membership Today!"
-    },
-    {
-      title: "Premium",
-      price: "$5",
-      priceUSD: 5,
-      features: [
-        "Pack of 3 Mock Interviews",
-        "Basic Interview Rating",
-        "Behavioral, Technical & Case Studies",
-        "Dedicated Industry Specific Interview Pool",
+        "One-On-One Coaching sessions",
         "Personalized Interview Report with Improvement suggestions",
-        "One-On-One Coaching Sessions with Experts with tips and tricks about how to secure a good job"
+        "Dedicated Industry Specific Interview Pool"
       ],
-      buttonLabel: "Experience the Best - Get Premium Now!"
-    }
+      buttonLabel: "Experience the Best - Start Now!"
+    },
+    // {
+    //   title: "Premium",
+    //   price: "$5",
+    //   priceUSD: 5,
+    //   features: [
+    //     "Pack of 3 Mock Interviews",
+    //     "Basic Interview Rating",
+    //     "Behavioral, Technical & Case Studies",
+    //     "Dedicated Industry Specific Interview Pool",
+    //     "Personalized Interview Report with Improvement suggestions",
+    //     "One-On-One Coaching Sessions with Experts with tips and tricks about how to secure a good job"
+    //   ],
+    //   buttonLabel: "Experience the Best - Get Premium Now!"
+    // }
   ];
 
   // Function to handle button click
