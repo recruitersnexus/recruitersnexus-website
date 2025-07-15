@@ -115,7 +115,7 @@ const nonEmptyValues = sortedKeys
 // Construct Secure Hash String: Shared Secret + non-empty param values
 const sortedString = integritySalt + "&" + nonEmptyValues.join("&");
 
-// console.log("Concatenated String for SecureHash: ", sortedString);
+console.log("Concatenated String for SecureHash: ", sortedString);
 
 const secureHash = crypto
   .createHmac("sha256", integritySalt)
