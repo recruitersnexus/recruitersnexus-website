@@ -18,7 +18,10 @@ export async function POST(req: Request) {
       .limit(1);
 
     if (!transaction.length) {
-      return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Transaction not found" },
+        { status: 404 }
+      );
     }
 
     const currentStatus = transaction[0].status;
@@ -30,10 +33,19 @@ export async function POST(req: Request) {
     // ✅ User Request: Only successful transactions can be refunded
     if (role === "user") {
       if (currentStatus !== "success") {
-        return NextResponse.json({ error: "Only successful transactions can be refunded" }, { status: 400 });
+        return NextResponse.json(
+          { error: "Only successful transactions can be refunded" },
+          { status: 400 }
+        );
       }
-      await db.update(transactions).set({ status: "refund_requested" }).where(eq(transactions.id, transactionId));
-      return NextResponse.json({ success: true, message: "Refund request submitted" });
+      await db
+        .update(transactions)
+        .set({ status: "refund_requested" })
+        .where(eq(transactions.id, transactionId));
+      return NextResponse.json({
+        success: true,
+        message: "Refund request submitted"
+      });
     }
 
     // ✅ Admin Request: Handle refund approval or rejection
@@ -42,16 +54,36 @@ export async function POST(req: Request) {
         // console.log("My amount to request refund :", amount);
         // return
         // ✅ Call JazzCash Refund API
-        const refundResponse = await initiateJazzCashRefund(pp_TxnRefNo, amount);
+        const refundResponse = await initiateJazzCashRefund(
+          pp_TxnRefNo,
+          amount
+        );
 
         if (refundResponse.success) {
-          await db.update(transactions).set({ status: "refunded" }).where(eq(transactions.id, transactionId));
-          return NextResponse.json({ success: true, message: "Refund approved and processed successfully" });
+          await db
+            .update(transactions)
+            .set({ status: "refunded" })
+            .where(eq(transactions.id, transactionId));
+          return NextResponse.json({
+            success: true,
+            message:
+              refundResponse.response.pp_ResponseMessage ||
+              "Refund approved and processed successfully"
+          });
         } else {
-          return NextResponse.json({ success: false, error: "JazzCash refund failed", details: refundResponse });
+          return NextResponse.json({
+            success: false,
+            error:
+              refundResponse.response.pp_ResponseMessage ||
+              "JazzCash refund failed",
+            details: refundResponse
+          });
         }
       } else {
-        await db.update(transactions).set({ status: "refund_rejected" }).where(eq(transactions.id, transactionId));
+        await db
+          .update(transactions)
+          .set({ status: "refund_rejected" })
+          .where(eq(transactions.id, transactionId));
         return NextResponse.json({ success: true, message: "Refund rejected" });
       }
     }
@@ -59,7 +91,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   } catch (error) {
     console.error("Refund Process Error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
 
@@ -88,9 +123,8 @@ async function initiateJazzCashRefund(pp_TxnRefNo: string, amount: number) {
       pp_MerchantID: process.env.JAZZCASH_MERCHANT_ID!,
       pp_Password: process.env.JAZZCASH_PASSWORD!,
       pp_TxnCurrency: "PKR",
-      pp_TxnRefNo: pp_TxnRefNo,
-     }
-     
+      pp_TxnRefNo: pp_TxnRefNo
+    };
 
     // ✅ Generate Secure Hash
     const secureHash = calculateSecureHash(params);
@@ -101,7 +135,7 @@ async function initiateJazzCashRefund(pp_TxnRefNo: string, amount: number) {
     const response = await fetch(process.env.JAZZCASH_REFUND_URL!, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(params),
+      body: JSON.stringify(params)
     });
 
     const responseData = await response.json();
@@ -109,7 +143,7 @@ async function initiateJazzCashRefund(pp_TxnRefNo: string, amount: number) {
 
     return {
       success: responseData.pp_ResponseCode === "000" ? true : false,
-      response: responseData,
+      response: responseData
     };
   } catch (error) {
     console.error("JazzCash Refund Request Error:", error);
@@ -118,17 +152,30 @@ async function initiateJazzCashRefund(pp_TxnRefNo: string, amount: number) {
 }
 
 // ✅ Secure Hash Calculation for Refund API
+// ✅ Secure Hash Calculation
 function calculateSecureHash(params: Record<string, string>): string {
   const integritySalt = process.env.JAZZCASH_INTEGRITY_SALT!;
-  
-  // 1️⃣ Extract "pp_" fields (except pp_SecureHash)
-  const filteredKeys = Object.keys(params)
-      .filter(key => key.startsWith("pp_") && key !== "pp_SecureHash")
-      .sort(); // 2️⃣ Sort alphabetically
+  if (!integritySalt) {
+    throw new Error("Integrity salt is missing");
+  }
 
-  // 3️⃣ Concatenate values with '&'
-  const hashString = integritySalt + "&" + filteredKeys.map(key => params[key]).join("&");
+  // 1️⃣ Extract "pp_" fields (except pp_SecureHash), discard empty values
+  const filteredKeys = Object.keys(params)
+    .filter(
+      (key) =>
+        key.startsWith("pp_") &&
+        key !== "pp_SecureHash" &&
+        params[key].trim() !== ""
+    )
+    .sort(); // 2️⃣ Sort alphabetically
+
+  // 3️⃣ Concatenate non-empty values with '&'
+  const hashString = integritySalt + "&" + filteredKeys.map((key) => params[key]).join("&");
 
   // 4️⃣ Generate HMAC-SHA256 hash
-  return crypto.createHmac("sha256", integritySalt).update(hashString).digest("hex").toUpperCase();
+  return crypto
+    .createHmac("sha256", integritySalt)
+    .update(hashString, "utf8")
+    .digest("hex")
+    .toUpperCase();
 }
